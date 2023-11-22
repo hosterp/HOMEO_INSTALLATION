@@ -1,0 +1,100 @@
+<openerp>
+    <data>
+        <template id="report_stock_order_template">
+            <t t-call="report.html_container">
+<!--                <t t-call="report.external_layout">-->
+                    <t t-foreach="docs" t-as="o">
+                        <div class="page">
+                            <div class="col-xs-12" style='font-size:20px'>
+                                <center>
+                                    <b>Stock Order</b>
+                                    <b></b>
+
+                                </center>
+                            </div>
+                            <style>
+                                    .right-aligned-div {
+                                    text-align: left;
+                                    float: right;
+                                    }
+                                    .left-aligned-div {
+                                    text-align: left;
+                                    float: left;
+                                    }
+                                    .center {
+                                    text-align: center;
+
+                                    }
+                                    .container {
+                                    display: grid;
+                                    grid-template-columns: 1fr 1fr 1fr;
+
+                                    }
+
+                                </style>
+                              <div class="container">
+                                  <div class="left-aligned-div">
+<!--                                      <div t-if="o.name">-->
+<!--                                            <strong>Supplier Name:</strong>-->
+<!--                                            <span t-field="o.name"/>-->
+<!--                                      </div>-->
+<!--                                      <div t-if="o.company_id">-->
+<!--                                            <strong>Company:</strong>-->
+<!--                                            <span t-field="o.company_id"/>-->
+<!--                                      </div>-->
+<!--                                      <div t-if="o.company_id">-->
+<!--                                            <strong>Company:</strong>-->
+<!--                                            <span t-field="o.company_id"/>-->
+<!--                                      </div>-->
+                                  </div>
+
+                              </div>
+                            <table class="table table-bordered">
+                                <div style="border:1px solid black;">
+                                    <thead>
+                                        <tr>
+                                            <th>Medicine</th>
+<!--                                            <th>Rack</th>-->
+                                            <th>Potency</th>
+                                            <th>Company</th>
+                                            <th>Group</th>
+                                            <th>New Order</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="invoice_tbody">
+                                        <tr t-foreach="o.order_ids" t-as="l">
+                                            <td>
+                                                <span t-field="l.medicine_id"/>
+                                            </td>
+<!--                                            <td>-->
+<!--                                                <span t-field="l.rack"/>-->
+<!--                                            </td>-->
+                                            <td>
+                                                <span t-field="l.potency"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="l.company"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="l.medicine_grp1"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="l.new_order"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </div>
+                            </table>
+                        </div>
+                    </t>
+<!--                </t>-->
+            </t>
+        </template>
+        <report
+                id="stock_order_report_id"
+                string="Stock Order Report"
+                model="stock.view.order"
+                report_type="qweb-html"
+                name="pharmacy_mgmnt.report_stock_order_template"/>
+    </data>
+</openerp>

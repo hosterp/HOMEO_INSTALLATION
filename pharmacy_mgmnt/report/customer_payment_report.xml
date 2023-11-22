@@ -1,0 +1,175 @@
+<openerp>
+    <data>
+
+        <report
+                id="action_customer_payment_report"
+                model="partner.payment"
+                string="Customer Payment"
+                report_type="qweb-pdf"
+                file="pharmacy_mgmnt.customer_payment_invoice"
+                name="pharmacy_mgmnt.customer_payment_invoice"
+                attachment_use="True"
+        />
+        <record id="pharmacy_mgmnt.action_customer_payment_report"
+                model="ir.actions.report.xml">
+            <field name="paperformat_id" ref="report_paperformat"/>
+        </record>
+        <template id="report_customer_payment_template">
+            <style>
+                table, th, td {
+
+                border-collapse: collapse;
+
+                }
+                th, td {
+                padding: 17px;
+                text-align: left;
+                }
+            </style>
+
+            <t t-call="report.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <xpath expr="//t[@t-call='report.external_layout']" position="replace">
+                        <t>
+                            <div class="page">
+                                <div style="border:1px solid black;">
+                                    <center>
+                                        <h3>
+                                            <b>TRAVANCORE HOMEO MEDICALS</b>
+                                        </h3>
+                                    </center>
+                                    <center>
+                                        <h5>
+                                            <b>TC 25/1613(1) SS KOVIL ROAD THAMPANOOR</b>
+                                        </h5>
+                                    </center>
+                                    <center>
+                                        <h5>
+                                            <b>TRIVANDRUM - 695001, KERALA-32,PH:0471-4010102,2335863 and
+                                                travancorehomeo@gmail.com
+                                            </b>
+                                        </h5>
+                                    </center>
+                                    <center>
+                                        <h4>
+                                            <b>GSTIN : 32AYAPS1856Q1ZY , DLNO:TVM-111350,TVM-111351 [20C 20D]</b>
+                                        </h4>
+                                    </center>
+                                    <center>
+                                        <h4>
+<!--                                            <b>TAX INVOICE-->
+<!--                                            </b>-->
+                                        </h4>
+                                    </center>
+                                </div>
+                                <br></br>
+                                <div>
+                                    <div class="left-aligned-div">
+                                        <div t-if="o.date">
+                                            <strong>Invoice Date:</strong>
+                                            <span t-field="o.date"/>
+                                        </div>
+                                        <div t-if="o.partner_id">
+                                            <strong>Customer Name:</strong>
+                                            <span t-field="o.partner_id.name"/>
+                                        </div>
+                                        <div t-if="o.res_person_id">
+                                            <strong>Responsible Person:</strong>
+                                            <span t-field="o.res_person_id.name"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br></br>
+                                <br></br>
+
+                                <style>
+                                    .right-aligned-div {
+                                    text-align: left;
+                                    float: right;
+                                    }
+                                    .left-aligned-div {
+                                    text-align: left;
+                                    float: left;
+                                    }
+                                    .center {
+                                    text-align: center;
+
+                                    }
+                                </style>
+                                <table class="table table-bordered">
+                                    <div style="border:1px solid black;">
+                                        <thead>
+                                            <tr>
+                                                <th>Partner</th>
+                                                <th>Responsible Person</th>
+                                                <th>Invoice Date</th>
+                                                <th>Number</th>
+                                                <th>Total</th>
+                                                <th>Balance</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody class="invoice_tbody">
+                                            <tr t-foreach="o.invoice_ids" t-as="l">
+                                                <td>
+                                                    <span t-field="l.partner_id.name"/>
+                                                </td>
+                                                <td>
+                                                    <span t-field="l.res_person.name"/>
+                                                </td>
+                                                <td>
+                                                    <span t-field="l.date_invoice"/>
+                                                </td>
+                                                <td>
+                                                    <span t-field="l.number2"/>
+                                                </td>
+                                                <td>
+                                                    <span t-field="l.amount_total"/>
+                                                </td>
+                                                <td>
+                                                    <span t-field="l.residual"/>
+                                                </td>
+
+                                            </tr>
+                                        </tbody>
+                                    </div>
+                                </table>
+                                <div class="row">
+                                    <div class="col-xs-4 pull-right">
+                                        <table class="table table-condensed">
+                                            <tr class="border-black">
+                                                <td>
+                                                    <strong>Total</strong>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-esc="sum(o.invoice_ids.mapped('amount_total'))"
+                                                          t-field-options='{"widget": "monetary"}, "display_currency": "o.currency_id"}'/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <strong>Balance</strong>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-esc="sum(o.invoice_ids.mapped('residual'))"
+                                                          t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </xpath>
+                </t>
+            </t>
+        </template>
+        <template id="customer_payment_invoice">
+            <t t-call="report.html_container">
+                <t t-foreach="doc_ids" t-as="doc_id">
+                    <t t-raw="translate_doc(doc_id, doc_model, 'partner_id.lang', 'pharmacy_mgmnt.report_customer_payment_template')"/>
+                </t>
+            </t>
+        </template>
+    </data>
+</openerp>

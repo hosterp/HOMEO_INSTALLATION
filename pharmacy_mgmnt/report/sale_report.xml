@@ -1,0 +1,218 @@
+<openerp>
+    <data>
+
+        <report
+                id="action_sale_report"
+                model="sales.report"
+                string="Sales Report"
+                report_type="qweb-pdf"
+                file="pharmacy_mgmnt.sales_report_id"
+                name="pharmacy_mgmnt.sales_report_id"
+                attachment_use="True"
+        />
+        <!--        <record id="pharmacy_mgmnt.action_customer_payment_report"-->
+        <!--                model="ir.actions.report.xml">-->
+        <!--            <field name="paperformat_id" ref="report_paperformat"/>-->
+        <!--        </record>-->
+        <template id="report_sales_template">
+            <style>
+                table, th, td {
+
+                border-collapse: collapse;
+
+                }
+                th, td {
+                padding: 17px;
+                text-align: left;
+                }
+            </style>
+
+            <t t-call="report.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <xpath expr="//t[@t-call='report.external_layout']" position="replace">
+                        <t>
+                            <div class="page">
+                                <div style="border:1px solid black;">
+                                    <center>
+                                        <h3>
+                                            <b>TRAVANCORE HOMEO MEDICALS</b>
+                                        </h3>
+                                    </center>
+                                    <center>
+                                        <h5>
+                                            <b>TC 25/1613(1) SS KOVIL ROAD THAMPANOOR</b>
+                                        </h5>
+                                    </center>
+                                    <center>
+                                        <h5>
+                                            <b>TRIVANDRUM - 695001, KERALA-32,PH:0471-4010102,2335863 and
+                                                travancorehomeo@gmail.com
+                                            </b>
+                                        </h5>
+                                    </center>
+                                    <center>
+                                        <h4>
+                                            <b>GSTIN : 32AYAPS1856Q1ZY , DLNO:TVM-111350,TVM-111351 [20C 20D]</b>
+                                        </h4>
+                                    </center>
+                                    <center>
+                                        <h4>
+                                            <!--                                            <b>TAX INVOICE-->
+                                            <!--                                            </b>-->
+                                        </h4>
+                                    </center>
+                                </div>
+                                <br></br>
+                                <style>
+                                    .right-aligned-div {
+                                    text-align: left;
+                                    float: right;
+                                    }
+                                    .left-aligned-div {
+                                    text-align: left;
+                                    float: left;
+                                    }
+                                    .center {
+                                    text-align: center;
+
+                                    }
+                                    .container {
+                                    display: grid;
+                                    grid-template-columns: 1fr 1fr 1fr;
+                                    <!--                                    gap: 10px; /* Adjust the gap as needed */-->
+                                    }
+
+                                </style>
+                                <div class="container">
+                                    <div class="left-aligned-div">
+<!--                                        <div t-if="o.date">-->
+<!--                                            <strong>Date:</strong>-->
+<!--                                            <span t-field="o.date"/>-->
+<!--                                        </div>-->
+                                        <div t-if="o.partner_id">
+                                            <strong>Customer Name:</strong>
+                                            <span t-field="o.partner_id.name"/>
+                                        </div>
+                                        <div t-if="o.res_person_id">
+                                            <strong>Responsible Person:</strong>
+                                            <span t-field="o.res_person_id.name"/>
+                                        </div>
+                                        <div t-if="o.potency">
+                                            <strong>Potency:</strong>
+                                            <span t-field="o.potency"/>
+                                        </div>
+                                        <div t-if="o.company">
+                                            <strong>Company:</strong>
+                                            <span t-field="o.company"/>
+                                        </div>
+                                         <div t-if="o.pay_mode">
+                                            <strong>Payment Mode:</strong>
+                                            <span t-field="o.pay_mode"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="right-aligned-div">
+                                        <div t-if="o.date_from">
+                                            <strong>Date From:</strong>
+                                            <span t-field="o.date_from"/>
+                                        </div>
+                                        <div t-if="o.date_to">
+                                            <strong>Date To:</strong>
+                                            <span t-field="o.date_to"/>
+                                        </div>
+                                        <div t-if="o.state">
+                                            <strong>Status:</strong>
+                                            <span t-field="o.state"/>
+                                        </div>
+                                        <div t-if="o.product">
+                                            <strong>Product:</strong>
+                                            <span t-field="o.product"/>
+                                        </div>
+                                        <div t-if="o.packing">
+                                            <strong>Packing:</strong>
+                                            <span t-field="o.packing"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <table class="table table-bordered">
+                                    <div style="border:1px solid black;">
+                                        <thead>
+                                            <tr>
+                                                <th>Partner</th>
+                                                <th>Invoice Date</th>
+                                                <th>Number</th>
+                                                <th>Balance</th>
+                                                <th>Total</th>
+                                                <th>Status</th>
+                                                <th>Responsible Person</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody class="invoice_tbody">
+                                            <tr t-foreach="o.invoice_ids" t-as="l">
+                                                <td>
+                                                    <span t-field="l.partner_id.name"/>
+                                                </td>
+                                                <td>
+                                                    <span t-field="l.date_invoice"/>
+                                                </td>
+                                                <td>
+                                                    <span t-field="l.number2"/>
+                                                </td>
+                                                <td>
+                                                    <span t-field="l.residual"/>
+                                                </td>
+                                                <td>
+                                                    <span t-field="l.amount_total"/>
+                                                </td>
+                                                <td>
+                                                    <span t-field="l.state"/>
+                                                </td>
+                                                <td>
+                                                    <span t-field="l.res_person.name"/>
+                                                </td>
+
+
+                                            </tr>
+                                        </tbody>
+                                    </div>
+                                </table>
+                                <div class="row">
+                                    <div class="col-xs-4 pull-right">
+                                        <table class="table table-condensed">
+                                            <tr class="border-black">
+                                                <td>
+                                                    <strong>Total</strong>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-esc="sum(o.invoice_ids.mapped('amount_total'))"
+                                                          t-field-options='{"widget": "monetary"}, "display_currency": "o.currency_id"}'/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <strong>Balance</strong>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-esc="sum(o.invoice_ids.mapped('residual'))"
+                                                          t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </xpath>
+                </t>
+            </t>
+        </template>
+        <template id="sales_report_id">
+            <t t-call="report.html_container">
+                <t t-foreach="doc_ids" t-as="doc_id">
+                    <t t-raw="translate_doc(doc_id, doc_model, 'partner_id.lang', 'pharmacy_mgmnt.report_sales_template')"/>
+                </t>
+            </t>
+        </template>
+    </data>
+</openerp>

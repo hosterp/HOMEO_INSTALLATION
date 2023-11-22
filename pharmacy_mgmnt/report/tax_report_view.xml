@@ -1,0 +1,184 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record id="form_tax_report" model="ir.ui.view">
+            <field name="name">tax.report.form</field>
+            <field name="model">tax.report.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <group>
+                            <field name="from_date" required="1"/>
+                            <field name="customer"/>
+                            <field name="product"/>
+                            <field name="potency"/>
+                        </group>
+                        <group>
+                            <field name="to_date" required="1"/>
+                            <field name="company"/>
+                            <field name="group"/>
+                            <field name="packing"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button type="object" name="view_tax_report" string="View" class="oe_highlight"/>
+                        <button type="object" name="print_tax_report" string="Print" class="oe_highlight"/>
+                        <button special="cancel" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_tax_report" model="ir.actions.act_window">
+            <field name="name">Tax report</field>
+            <field name="res_model">tax.report.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="form_tax_report"/>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem
+                id="menu_tax_reports"
+                name="Tax Reports"
+                sequence="2"
+                parent="pharmacy_mgmnt.menu_reports_0"/>
+
+
+<!--        <menuitem-->
+<!--                id="tax_report_menu_id"-->
+<!--                name="Tax Report"-->
+<!--                parent="menu_tax_reports"-->
+<!--                action="action_tax_report"/>-->
+
+
+        <report
+                id="tax_report_id"
+                string="Tax Report"
+                model="tax.report.wizard"
+                report_type="qweb-html"
+                name="pharmacy_mgmnt.tax_report_template"/>
+
+
+        <template id="tax_report_template">
+            <t t-call="report.html_container">
+<!--                <t t-call="report.external_layout">-->
+                    <t t-foreach="docs" t-as="o">
+                        <div class="page">
+                            <div class="col-xs-12" style='font-size:20px'>
+                                <center>
+                                    <b>TAX REPORT</b>
+                                </center>
+                            </div>
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td style='font-size:15px'>
+                                        <b>Sl No</b>
+                                    </td>
+                                    <td style='font-size:15px'>
+                                        <b>Bill Date</b>
+                                    </td>
+                                    <td style='font-size:15px'>
+                                        <b>Bill Nature</b>
+                                    </td>
+                                    <td style='font-size:15px'>
+                                        <b>Invoice No</b>
+                                    </td>
+                                    <td style='font-size:15px'>
+                                        <b>Responsible Person</b>
+                                    </td>
+                                    <td style='font-size:15px'>
+                                        <b>Tax Total</b>
+                                    </td>
+                                    <td style='font-size:15px'>
+                                        <b>Total Amount</b>
+                                    </td>
+                                    <t t-if="o.product">
+                                        <td style='font-size:15px'>
+                                            <b>Quantity</b>
+                                        </td>
+                                        <td style='font-size:15px'>
+                                            <b>Rate</b>
+                                        </td>
+                                    </t>
+
+                                </tr>
+                                <t t-set="sl_no" t-value="1"/>
+                                <t t-set="tax_total" t-value="0"/>
+                                <t t-set="total_amount" t-value="0"/>
+                                <t t-set="total_quantity" t-value="0"/>
+                                <t t-set="total_rate" t-value="0"/>
+                                <t t-foreach="o.get_tax_invoices()" t-as="line">
+
+                                    <tr>
+                                        <td style='font-size:15px'>
+                                            <span t-esc="sl_no"/>
+                                        </td>
+                                        <t t-set="sl_no" t-value="sl_no+1"/>
+                                        <td style='font-size:15px'>
+                                            <span t-esc="line.invoice_id.date_invoice"/>
+                                        </td>
+                                        <td style='font-size:15px'>
+                                            <span t-esc="line.invoice_id.bill_nature"/>
+                                        </td>
+                                        <td style='font-size:15px'>
+                                            <span t-esc="line.invoice_id.number2"/>
+                                        </td>
+                                        <td style='font-size:15px'>
+                                            <span t-esc="line.invoice_id.res_person.name"/>
+                                        </td>
+                                        <td style='font-size:15px'>
+                                            <span t-esc="line.amt_tax"/>
+                                        </td>
+                                        <t t-set="tax_total" t-value="tax_total+line.amt_tax"/>
+                                        <td style='font-size:15px'>
+                                            <span t-esc="line.amt_w_tax"/>
+                                        </td>
+                                        <t t-set="total_amount" t-value="total_amount+line.amt_w_tax"/>
+
+                                        <t t-if="o.product">
+                                            <td style='font-size:15px'>
+                                                <span t-esc="line.quantity"/>
+                                            </td>
+                                            <t t-set="total_quantity" t-value="total_quantity+line.quantity"/>
+                                            <td style='font-size:15px'>
+                                                <span t-esc="line.price_subtotal"/>
+                                            </td>
+                                            <t t-set="total_rate" t-value="total_rate+line.price_subtotal"/>
+                                        </t>
+                                    </tr>
+
+                                </t>
+                                <tr>
+                                    <td/>
+                                    <td/>
+                                    <td/>
+                                    <td/>
+                                    <td/>
+                                    <td style='font-size:15px'>
+                                        <span t-esc="tax_total"/>
+                                    </td>
+                                    <td style='font-size:15px'>
+                                        <span t-esc="total_amount"/>
+                                    </td>
+                                    <t t-if="o.product">
+                                        <td style='font-size:15px'>
+                                            <span t-esc="total_quantity"/>
+                                        </td>
+                                        <td style='font-size:15px'>
+                                            <span t-esc="total_rate"/>
+                                        </td>
+                                    </t>
+                                </tr>
+
+                            </table>
+
+
+                        </div>
+                    </t>
+<!--                </t>-->
+            </t>
+        </template>
+
+    </data>
+</openerp>

@@ -1,0 +1,725 @@
+<openerp>
+    <data>
+        <template id="supplier_invoice_report_inherit_template" inherit_id="account.report_invoice_document">
+
+            <xpath expr="//t[@t-call='report.external_layout']" position="replace">
+                <t>
+                    <!--                <xpath expr="//div[hasclass('page')]" position="replace">-->
+                    <div class="page">
+                        <div style="border:1px solid black;">
+                            <center>
+                                <h3>
+                                    <b>TRAVANCORE HOMEO MEDICALS</b>
+                                </h3>
+                            </center>
+                            <center>
+                                <h5>
+                                    <b>TC 25/1613(1) SS KOVIL ROAD THAMPANOOR</b>
+                                </h5>
+                            </center>
+                            <center>
+                                <h5>
+                                    <b>TRIVANDRUM - 695001, KERALA-32,PH:0471-4010102,2335863 and
+                                        travancorehomeo@gmail.com
+                                    </b>
+                                </h5>
+                            </center>
+                            <center>
+                                <h4>
+                                    <b>GSTIN : 32AYAPS1856Q1ZY , DLNO:TVM-111350,TVM-111351 [20C 20D]</b>
+                                </h4>
+                            </center>
+                            <center>
+                                <h4>
+                                    <b>TAX INVOICE(<span t-field="o.financial_year"/>)
+                                    </b>
+                                </h4>
+                            </center>
+                        </div>
+                        <br></br>
+                        <style>
+                            .right-aligned-div {
+                            text-align: left;
+                            float: right;
+                            }
+                            .left-aligned-div {
+                            text-align: left;
+                            float: left;
+                            }
+                            .center {
+                            text-align: center;
+
+                            }
+                        </style>
+                        <div class="center">
+
+                            <!--                                <div t-if="o.partner_id.phone">-->
+                            <!--                                        <strong>Phone Number:</strong>-->
+                            <!--                                        <span t-field="o.partner_id.phone"/>-->
+                            <!--                                </div>-->
+                        </div>
+                        <div>
+                            <div class="left-aligned-div">
+                                <div t-if="o.partner_id">
+                                    <strong>Customer Name:</strong>
+                                    <span t-field="o.partner_id.name"/>
+                                </div>
+                                <div t-if="o.address_new">
+                                    <strong>Address:</strong>
+                                    <span t-field="o.address_new"/>
+                                </div>
+                                <div t-if="o.partner_id.gst_no">
+                                    <strong>GST NO:</strong>
+                                    <span t-field="o.partner_id.gst_no"/>
+                                </div>
+                                <div t-if="o.partner_id.mobile">
+                                    <strong>Mobile:</strong>
+                                    <span t-field="o.partner_id.mobile"/>
+                                </div>
+                            </div>
+
+                            <div class="right-aligned-div">
+                                <div>
+                                    <strong>Invoice No:</strong>
+                                    <span t-field="o.number2"/>
+                                </div>
+                                <div t-if="o.date_invoice">
+                                    <strong>Invoice Date:</strong>
+                                    <span t-field="o.date_invoice"/>
+                                </div>
+
+                                <div t-if="o.partner_id.drug_license_number">
+                                    <strong>Drug License Number:</strong>
+                                    <span t-field="o.partner_id.drug_license_number"/>
+                                </div>
+                            </div>
+                        </div>
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        <table class="table table-bordered">
+                            <div style="border:1px solid black;">
+                                <thead>
+                                    <tr>
+                                        <th>SL NO</th>
+                                        <th>HSN</th>
+                                        <th>Product/Service</th>
+                                        <th>Batch</th>
+                                        <th>Expiry</th>
+                                        <th>Quantity</th>
+                                        <th class="text-right">MRP</th>
+                                        <th class="text-right">GST</th>
+                                        <th class="text-right">Unit Price</th>
+                                        <th class="text-right">GST%</th>
+                                        <!--                        <th class="text-right">Gross Amount</th>-->
+                                        <!--                        <th class="text-right">GST</th>-->
+                                        <th class="text-right">Net</th>
+
+                                    </tr>
+                                </thead>
+                                <t t-set="sl_no" t-value="1"/>
+                                <tbody class="invoice_tbody">
+                                    <t t-set="tax5_tax" t-value="0"/>
+                                    <t t-set="tax12_tax" t-value="0"/>
+                                    <t t-set="tax18_tax" t-value="0"/>
+                                    <tr t-foreach="o.invoice_line" t-as="l">
+                                        <td>
+                                            <span t-esc="sl_no"/>
+                                            <t t-set="sl_no" t-value="sl_no+1"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="l.hsn_code"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="l.name"/>
+                                            <span t-field="l.medicine_name_subcat.medicine_rack_subcat"/>
+                                            <span t-field="l.medicine_name_packing.medicine_pack"/>
+                                            <span t-field="l.product_of.name_responsible"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="l.batch_2"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="l.expiry_date"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="int(l.quantity)"/>
+                                            <span t-field="l.uos_id" groups="product.group_uom"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-field="l.price_unit"/>
+                                        </td>
+                                         <td>
+                                            <span t-field="l.product_tax"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="l.price_subtotal"/>
+                                        </td>
+                                        <td>
+                                            <t t-if="l.invoice_line_tax_id4 == 5">
+                                                <t t-set="tax5_tax" t-value="tax5_tax+l.product_tax"/>
+                                            </t>
+                                            <t t-if="l.invoice_line_tax_id4 == 12">
+                                                <t t-set="tax12_tax" t-value="tax12_tax+l.product_tax"/>
+                                            </t>
+                                            <t t-if="l.invoice_line_tax_id4 == 18">
+                                                <t t-set="tax18_tax" t-value="tax18_tax+l.product_tax"/>
+                                            </t>
+                                            <span t-field="l.invoice_line_tax_id4"/>
+                                        </td>
+                                        <!--                        <td><span t-field="l.amt_tax"/></td>-->
+                                        <!--                        <td><span t-field="l.amt_w_tax"/></td>-->
+                                        <t t-if="o.type == 'out_invoice'">
+                                            <!--                            <td><span t-esc="l.price_subtotal + (l.price_subtotal * (l.invoice_line_tax_id4/100))"/></td>-->
+                                            <td>
+                                                <span t-esc="l.amt_w_tax"/>
+                                            </td>
+                                        </t>
+                                        <t t-if="o.type != 'out_invoice'">
+                                            <td>
+                                                <span t-esc="l.amount_w_tax"/>
+                                            </td>
+                                        </t>
+                                    </tr>
+                                    <t t-set="qty_total" t-value="0"/>
+                                    <p t-foreach="o.invoice_line" t-as="line">
+                                        <t t-set="qty_total" t-value="qty_total+line.quantity"/>
+                                    </p>
+                                    <t t-set="mrp_total" t-value="0"/>
+                                    <p t-foreach="o.invoice_line" t-as="line">
+                                        <t t-set="mrp_total" t-value="mrp_total+line.price_unit"/>
+                                    </p>
+                                    <tr>
+                                        <!--            <td colspan="6" style="width: 10%;" align="center"><center><h3><b>Grand Total</b></h3></center></td>-->
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>
+                                            <b>
+                                                <strong>
+                                                    <span t-esc="int(qty_total)"/>
+                                                </strong>
+                                            </b>
+                                        </td>
+                                        <td>
+                                            <b>
+                                                <center>
+                                                    <strong>
+                                                        <span t-esc="mrp_total"/>
+                                                    </strong>
+                                                </center>
+                                            </b>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </div>
+                        </table>
+                        <div class="row">
+                            <t t-if="not o.partner_id.interstate_customer">
+                                <div class="col-xs-4 pull-left">
+                                    <table class="table table-condensed">
+                                        <t t-set="found_5" t-value="False"/>
+                                        <t t-set="found_18" t-value="False"/>
+                                        <t t-set="found_12" t-value="False"/>
+                                        <t t-set="total_amt_w_tax" t-value="0.0"/>
+
+                                           <t t-if="tax18_tax != 0">
+<!--                                                <t t-set="found_18" t-value="True"/>-->
+                                                <tr>
+                                                    <td>
+                                                        <strong>CGST@Tax9.0%</strong>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <!--                                                    <td style='font-size:20px'>-->
+                                                        <strong t-esc="(tax18_tax)/2"/>
+                                                        <!--                                                    </td>-->
+                                                    </td>
+
+                                                </tr>
+
+                                                <tr>
+                                                    <td>
+                                                        <strong>SGST@Tax9.0%</strong>
+                                                    </td>
+                                                   <td class="text-right">
+                                                        <!--                                                    <td style='font-size:20px'>-->
+                                                        <strong t-esc="(tax18_tax)/2"/>
+                                                        <!--                                                    </td>-->
+                                                    </td>
+
+                                                </tr>
+
+                                            </t>
+                                            <t t-if="tax5_tax != 0">
+<!--                                                <t t-set="found_5" t-value="True"/>-->
+                                                <tr>
+                                                    <td>
+                                                        <strong>CGST@Tax2.5%</strong>
+                                                    </td>
+                                                     <td class="text-right">
+                                                        <!--                                                    <td style='font-size:20px'>-->
+                                                        <strong t-esc="(tax5_tax)/2"/>
+                                                        <!--                                                    </td>-->
+                                                    </td>
+
+                                                </tr>
+
+                                                <tr>
+                                                    <td>
+                                                        <strong>SGST@Tax2.5%</strong>
+                                                    </td>
+                                                     <td class="text-right">
+                                                        <!--                                                    <td style='font-size:20px'>-->
+                                                        <strong t-esc="(tax5_tax)/2"/>
+                                                        <!--                                                    </td>-->
+                                                    </td>
+
+                                                </tr>
+
+                                            </t>
+                                           <t t-if="tax12_tax != 0">
+<!--                                                <t t-set="found_12" t-value="True"/>-->
+                                                <tr>
+                                                    <td>
+                                                        <strong>CGST@Tax6.0%</strong>
+                                                    </td>
+                                                  <td class="text-right">
+                                                        <!--                                                    <td style='font-size:20px'>-->
+                                                        <strong t-esc="(tax12_tax)/2"/>
+                                                        <!--                                                    </td>-->
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>
+                                                        <strong>SGST@Tax6.0%</strong>
+                                                    </td>
+                                                   <td class="text-right">
+                                                        <!--                                                    <td style='font-size:20px'>-->
+                                                        <strong t-esc="(tax12_tax)/2"/>
+                                                        <!--                                                    </td>-->
+                                                    </td>
+                                                </tr>
+                                            </t>
+<!--                                        </tr>-->
+                                    </table>
+                                </div>
+                                <div class="col-xs-4 pull-center">
+<!--                                    <div t-if="o.amount_in_words">-->
+<!--                                        <strong>Amount in words:</strong>-->
+<!--                                        <span t-field="o.amount_in_words"/>-->
+<!--                                    </div>-->
+<!--                                    <td>-->
+<!--                                        <strong>Amount in words:</strong>-->
+<!--                                    </td>-->
+                                </div>
+                            </t>
+                            <t t-if="o.partner_id.interstate_customer">
+                                <div class="col-xs-4 pull-left">
+                                    <table class="table table-condensed">
+                                        <t t-set="found_5" t-value="False"/>
+                                        <t t-set="found_18" t-value="False"/>
+                                        <t t-set="found_12" t-value="False"/>
+                                        <t t-set="total_amt_w_tax" t-value="0.0"/>
+<!--                                        <tr t-foreach="o.invoice_line" t-as="l">-->
+                                           <t t-if="tax18_tax != 0">
+<!--                                                <t t-set="found_18" t-value="True"/>-->
+                                                <tr>
+                                                    <td>
+                                                        <strong>CGST@Tax9.0%</strong>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <!--                                                    <td style='font-size:20px'>-->
+                                                        <strong t-esc="(tax18_tax)/2"/>
+                                                        <!--                                                    </td>-->
+                                                    </td>
+
+                                                </tr>
+
+                                                <tr>
+                                                    <td>
+                                                        <strong>IGST@Tax9.0%</strong>
+                                                    </td>
+                                                   <td class="text-right">
+                                                        <!--                                                    <td style='font-size:20px'>-->
+                                                        <strong t-esc="(tax18_tax)/2"/>
+                                                        <!--                                                    </td>-->
+                                                    </td>
+
+                                                </tr>
+
+                                            </t>
+                                            <t t-if="tax5_tax != 0">
+<!--                                                <t t-set="found_5" t-value="True"/>-->
+                                                <tr>
+                                                    <td>
+                                                        <strong>CGST@Tax2.5%</strong>
+                                                    </td>
+                                                     <td class="text-right">
+                                                        <!--                                                    <td style='font-size:20px'>-->
+                                                        <strong t-esc="(tax5_tax)/2"/>
+                                                        <!--                                                    </td>-->
+                                                    </td>
+
+                                                </tr>
+
+                                                <tr>
+                                                    <td>
+                                                        <strong>IGST@Tax2.5%</strong>
+                                                    </td>
+                                                     <td class="text-right">
+                                                        <!--                                                    <td style='font-size:20px'>-->
+                                                        <strong t-esc="(tax5_tax)/2"/>
+                                                        <!--                                                    </td>-->
+                                                    </td>
+
+                                                </tr>
+
+                                            </t>
+                                           <t t-if="tax12_tax != 0">
+<!--                                                <t t-set="found_12" t-value="True"/>-->
+                                                <tr>
+                                                    <td>
+                                                        <strong>CGST@Tax6.0%</strong>
+                                                    </td>
+                                                  <td class="text-right">
+                                                        <!--                                                    <td style='font-size:20px'>-->
+                                                        <strong t-esc="(tax12_tax)/2"/>
+                                                        <!--                                                    </td>-->
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>
+                                                        <strong>IGST@Tax6.0%</strong>
+                                                    </td>
+                                                   <td class="text-right">
+                                                        <!--                                                    <td style='font-size:20px'>-->
+                                                        <strong t-esc="(tax12_tax)/2"/>
+                                                        <!--                                                    </td>-->
+                                                    </td>
+                                                </tr>
+                                            </t>
+<!--                                        </tr>-->
+                                    </table>
+                                </div>
+                            </t>
+                            <div class="col-xs-4 pull-right">
+                                <table class="table table-condensed">
+                                    <tr class="border-black">
+                                        <td>
+                                            <strong>Gross Amount</strong>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-esc="o.amount_total - o.amount_tax"
+                                                  t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <!--                            <td>Taxes</td>-->
+                                        <!--                            <td class="text-right">-->
+                                        <!--                                <span t-field="o.amount_tax" t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>-->
+                                        <!--                            </td>-->
+                                        <td>
+                                            <strong>CGST</strong>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-esc="o.amount_tax/2"
+                                                  t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <t t-if="not o.partner_id.interstate_customer">
+                                            <td>
+                                                <strong>SGST</strong>
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-esc="o.amount_tax/2"
+                                                      t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
+                                            </td>
+                                        </t>
+                                    </tr>
+                                    <tr>
+                                        <t t-if="o.partner_id.interstate_customer">
+                                            <td>
+                                                <strong>IGST</strong>
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-esc="o.amount_tax/2"
+                                                      t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
+                                            </td>
+                                        </t>
+                                    </tr>
+                                    <tr class="border-black">
+
+                                        <td>
+                                            <strong>Total</strong>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-field="o.amount_total"
+                                                  t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
+                                        </td>
+
+                                    </tr>
+
+                                </table>
+                                <div t-if="o.amount_in_words">
+                                    <strong>Amount in words:</strong>
+                                    <span t-field="o.amount_in_words"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--            <div class="row" t-if="o.tax_line">-->
+                        <!--                <div class="col-xs-6">-->
+                        <!--                    <table class="table table-condensed">-->
+                        <!--                        <thead>-->
+                        <!--                            <tr>-->
+                        <!--                                <th>Tax</th>-->
+                        <!--                                <th class="text-right">Base</th>-->
+                        <!--                                <th class="text-right">Amount</th>-->
+                        <!--                            </tr>-->
+                        <!--                        </thead>-->
+                        <!--                        <tbody>-->
+                        <!--                            <tr t-foreach="o.tax_line" t-as="t">-->
+                        <!--                                <td><span t-field="t.name"/></td>-->
+                        <!--                                <td class="text-right">-->
+                        <!--                                    <span t-field="t.base"-->
+                        <!--                                        t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>-->
+                        <!--                                </td>-->
+                        <!--                                <td class="text-right">-->
+                        <!--                                    <span t-field="t.amount"-->
+                        <!--                                        t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>-->
+                        <!--                                </td>-->
+                        <!--                            </tr>-->
+                        <!--                        </tbody>-->
+                        <!--                    </table>-->
+                        <!--                </div>-->
+                        <!--            </div>-->
+
+                        <!--            <p t-if="o.comment">-->
+                        <!--                <strong>Comment:</strong>-->
+                        <!--                <span t-field="o.comment"/>-->
+                        <!--            </p>-->
+                        <!--            <p t-if="o.payment_term.note">-->
+                        <!--                <strong>Payment Term:</strong>-->
+                        <!--                <span t-field="o.payment_term.note"/>-->
+                        <!--            </p>-->
+                        <!--            <p t-if="o.fiscal_position.note">-->
+                        <!--                <strong>Fiscal Position Remark:</strong>-->
+                        <!--                <span t-field="o.fiscal_position.note"/>-->
+                        <!--            </p>-->
+
+                    </div>
+                    <!--            </xpath>-->
+
+                </t>
+            </xpath>
+
+            <!--            <xpath expr="//div[hasclass('page')]" position="replace">-->
+            <!--                <div class="page">-->
+            <!--                    <div style="border:1px solid black;">-->
+            <!--                        <center><h3><b>TRAVANCORE HOMEO MEDICALS</b></h3></center>-->
+            <!--                        <center><h5><b>TC 25/1613(1) SS KOVIL ROAD THAMPANOOR</b></h5></center>-->
+            <!--                        <center><h5><b>TRIVANDRUM - 695001, KERALA-32,PH:0471-4010102,2335863 and travancorehomeo@gmail.com </b></h5></center>-->
+            <!--                        <center><h4><b>GSTIN : 32AYAPS1856Q1ZY , DLNO:TVM-111350,TVM-111351 [20C 20D]</b></h4></center>-->
+            <!--                        <center><h4><b>TAX INVOICE(<span t-field="o.financial_year"/>)</b></h4></center>-->
+            <!--                    </div><br></br>-->
+
+            <!--            <div>-->
+
+            <!--                <div>-->
+            <!--                    <strong>Invoice No:</strong><span t-field="o.number"/>-->
+            <!--                </div>-->
+            <!--                <div t-if="o.date_invoice">-->
+            <!--                    <strong>Invoice Date:</strong> <span t-field="o.date_invoice"/>-->
+            <!--                </div>-->
+            <!--                <div t-if="o.partner_id">-->
+            <!--                    <strong>Customer Name:</strong><span t-field="o.partner_id.name"/>-->
+            <!--                </div>-->
+            <!--            </div><br></br>-->
+
+            <!--<table class="table table-bordered">-->
+            <!--    <div style="border:1px solid black;">-->
+            <!--                <thead>-->
+            <!--                    <tr>-->
+            <!--                        <th>SL NO</th>-->
+            <!--                        <th>HSN</th>-->
+            <!--                        <th>Product/Service</th>-->
+            <!--                        <th>Batch</th>-->
+            <!--                        <th>Expiry</th>-->
+            <!--                        <th>Quantity</th>-->
+            <!--                        <th class="text-right">MRP</th>-->
+            <!--                        <th class="text-right">Unit Price</th>-->
+            <!--                        <th class="text-right">GST%</th>-->
+            <!--&lt;!&ndash;                        <th class="text-right">Gross Amount</th>&ndash;&gt;-->
+            <!--                        <th class="text-right">GST</th>-->
+            <!--                        <th class="text-right">Net</th>-->
+
+            <!--                    </tr>-->
+            <!--                </thead>-->
+            <!--                    <t t-set="sl_no" t-value="1" />-->
+            <!--                <tbody class="invoice_tbody">-->
+            <!--                    <tr t-foreach="o.invoice_line" t-as="l">-->
+            <!--                        <td >-->
+            <!--                            <span t-esc="sl_no" />-->
+            <!--                            <t t-set="sl_no" t-value="sl_no+1" />-->
+            <!--                        </td>-->
+            <!--                        <td><span t-field="l.hsn_code"/></td>-->
+            <!--                        <td><span t-field="l.name"/> <span t-field="l.medicine_name_subcat.medicine_rack_subcat"/> <span t-field="l.medicine_name_packing.medicine_pack"/> <span t-field="l.product_of.name_responsible"/></td>-->
+            <!--                        <td><span t-field="l.batch_2"/></td>-->
+            <!--                        <td><span t-field="l.expiry_date"/></td>-->
+            <!--                        <td>-->
+            <!--                            <span t-field="l.quantity"/>-->
+            <!--                            <span t-field="l.uos_id"  groups="product.group_uom"/>-->
+            <!--                        </td>-->
+            <!--                        <td class="text-right">-->
+            <!--                            <span t-field="l.price_unit"/>-->
+            <!--                        </td>-->
+            <!--                        <td><span t-field="l.price_subtotal"/></td>-->
+            <!--                        <td><span t-field="l.invoice_line_tax_id4"/></td>-->
+            <!--                        <td><span t-field="l.amt_tax"/></td>-->
+            <!--                        <td><span t-field="l.amt_w_tax"/></td>-->
+
+            <!--                    </tr>-->
+            <!--                </tbody>-->
+            <!--    </div>-->
+
+            <!--            </table>-->
+
+            <!--            <div class="row">-->
+            <!--                <div class="col-xs-4 pull-right">-->
+            <!--                    <table class="table table-condensed">-->
+            <!--                        <tr class="border-black">-->
+            <!--                            <td><strong>Gross Amount</strong></td>-->
+            <!--                            <td class="text-right">-->
+            <!--                                <span t-esc="o.amount_total - o.amount_tax" t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>-->
+            <!--                            </td>-->
+            <!--                        </tr>-->
+            <!--                        <tr>-->
+            <!--&lt;!&ndash;                            <td>Taxes</td>&ndash;&gt;-->
+            <!--&lt;!&ndash;                            <td class="text-right">&ndash;&gt;-->
+            <!--&lt;!&ndash;                                <span t-field="o.amount_tax" t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>&ndash;&gt;-->
+            <!--&lt;!&ndash;                            </td>&ndash;&gt;-->
+            <!--                            <td><strong>CGST</strong></td>-->
+            <!--                            <td class="text-right">-->
+            <!--                                <span t-esc="o.amount_tax/2" t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>-->
+            <!--                            </td>-->
+            <!--                        </tr>-->
+            <!--                        <tr>-->
+            <!--                            <td><strong>SGST</strong></td>-->
+            <!--                            <td class="text-right">-->
+            <!--                                <span t-esc="o.amount_tax/2" t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>-->
+            <!--                            </td>-->
+            <!--                        </tr>-->
+            <!--                        <tr class="border-black">-->
+            <!--                            <td><strong>Total</strong></td>-->
+            <!--                            <td class="text-right">-->
+            <!--                                 <span t-field="o.amount_total" t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>-->
+            <!--                            </td>-->
+            <!--                        </tr>-->
+            <!--                    </table>-->
+            <!--                </div>-->
+            <!--            </div>-->
+
+            <!--            <div class="row" t-if="o.tax_line">-->
+            <!--                <div class="col-xs-6">-->
+            <!--                    <table class="table table-condensed">-->
+            <!--                        <thead>-->
+            <!--                            <tr>-->
+            <!--                                <th>Tax</th>-->
+            <!--                                <th class="text-right">Base</th>-->
+            <!--                                <th class="text-right">Amount</th>-->
+            <!--                            </tr>-->
+            <!--                        </thead>-->
+            <!--                        <tbody>-->
+            <!--                            <tr t-foreach="o.tax_line" t-as="t">-->
+            <!--                                <td><span t-field="t.name"/></td>-->
+            <!--                                <td class="text-right">-->
+            <!--                                    <span t-field="t.base"-->
+            <!--                                        t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>-->
+            <!--                                </td>-->
+            <!--                                <td class="text-right">-->
+            <!--                                    <span t-field="t.amount"-->
+            <!--                                        t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>-->
+            <!--                                </td>-->
+            <!--                            </tr>-->
+            <!--                        </tbody>-->
+            <!--                    </table>-->
+            <!--                </div>-->
+            <!--            </div>-->
+
+            <!--            <p t-if="o.comment">-->
+            <!--                <strong>Comment:</strong>-->
+            <!--                <span t-field="o.comment"/>-->
+            <!--            </p>-->
+            <!--            <p t-if="o.payment_term.note">-->
+            <!--                <strong>Payment Term:</strong>-->
+            <!--                <span t-field="o.payment_term.note"/>-->
+            <!--            </p>-->
+            <!--            <p t-if="o.fiscal_position.note">-->
+            <!--                <strong>Fiscal Position Remark:</strong>-->
+            <!--                <span t-field="o.fiscal_position.note"/>-->
+            <!--            </p>-->
+
+            <!--                </div>-->
+            <!--            </xpath>-->
+
+
+            <!--            <xpath expr="//div[hasclass('page')]" position="after">-->
+            <!--                <h1>TRAVANCORE MEDICALS TRIVANDRUM</h1>-->
+            <!--            </xpath>-->
+            <!--            <xpath expr="//table[@class='table table-condensed']" position="replace">-->
+            <!--                <table class="table table-bordered">-->
+            <!--                <thead>-->
+            <!--                    <tr>-->
+            <!--                        <th>SL NO</th>-->
+            <!--                        <th>HSN</th>-->
+            <!--                        <th>Product/Service</th>-->
+            <!--                        <th>Batch</th>-->
+            <!--                        <th>Expiry</th>-->
+            <!--                        <th>Quantity</th>-->
+            <!--                        <th class="text-right">MRP</th>-->
+            <!--                        <th class="text-right">Unit Price</th>-->
+            <!--                        <th class="text-right">GST%</th>-->
+            <!--&lt;!&ndash;                        <th class="text-right">Gross Amount</th>&ndash;&gt;-->
+            <!--                        <th class="text-right">GST</th>-->
+            <!--                        <th class="text-right">Net</th>-->
+
+            <!--                    </tr>-->
+            <!--                </thead>-->
+            <!--                    <t t-set="sl_no" t-value="1" />-->
+            <!--                <tbody class="invoice_tbody">-->
+            <!--                    <tr t-foreach="o.invoice_line" t-as="l">-->
+            <!--                        <td >-->
+            <!--                            <span t-esc="sl_no" />-->
+            <!--                            <t t-set="sl_no" t-value="sl_no+1" />-->
+            <!--                        </td>-->
+            <!--                        <td><span t-field="l.hsn_code"/></td>-->
+            <!--                        <td><span t-field="l.name"/></td>-->
+            <!--                        <td><span t-field="l.batch_2"/></td>-->
+            <!--                        <td><span t-field="l.expiry_date"/></td>-->
+            <!--                        <td>-->
+            <!--                            <span t-field="l.quantity"/>-->
+            <!--                            <span t-field="l.uos_id"  groups="product.group_uom"/>-->
+            <!--                        </td>-->
+            <!--                        <td class="text-right">-->
+            <!--                            <span t-field="l.price_unit"/>-->
+            <!--                        </td>-->
+            <!--                        <td><span t-field="l.price_subtotal"/></td>-->
+            <!--                        <td><span t-field="l.invoice_line_tax_id4"/></td>-->
+            <!--                        <td><span t-field="l.amt_tax"/></td>-->
+            <!--                        <td><span t-field="l.amt_w_tax"/></td>-->
+            <!--                        -->
+            <!--                    </tr>-->
+            <!--                </tbody>-->
+            <!--            </table>-->
+            <!--            </xpath>-->
+
+
+        </template>
+    </data>
+</openerp>

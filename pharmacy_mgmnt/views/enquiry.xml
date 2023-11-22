@@ -1,0 +1,74 @@
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="action_medicine_enquiry_tree">
+            <field name="name">Medicine Enquiry Tree</field>
+            <field name="model">medicine.enquiry</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="medicines" version="7.0">
+                    <field name="name"/>
+                    <field name="phone_no"/>
+                    <field name="address"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="action_medicine_enquiry_form">
+            <field name="name">Medicine Enquiry Form</field>
+            <field name="model">medicine.enquiry</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <header>
+                    <button name="print_enquiry_report" string="Print Report" type="object"
+                            class="oe_highlight"/>
+                    <button name="purchase_button" string="Purchased" type="object"
+                            class="oe_highlight"/>
+                     <field name="state" nolabel="1" widget="statusbar" statusbar_visible="draft,order,purchased"/>
+                </header>
+                <form string="medicines">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" required="1"/>
+                                <field name="phone_no"/>
+                            </group>
+                            <group>
+                                <field name="address"/>
+                            </group>
+                        </group>
+                        <field name="medicine_ids" string="Medicine">
+                            <tree editable="bottom">
+                                <field name="medicine_line_id" invisible="1"/>
+                                <field name="medicine_id" required="1"/>
+                                <field name="group_id"/>
+                                <field name="potency_id"/>
+                                <field name="packing_id"/>
+                                <field name="qty"/>
+                            </tree>
+                        </field>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="action_medicine_enquiry" model="ir.actions.act_window">
+            <field name="name">Medicine Enquiry</field>
+            <field name="res_model">medicine.enquiry</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="action_medicine_enquiry_tree"/>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="target">current</field>
+        </record>
+        <menuitem id="menu_enquiry_main"
+                  name="Enquiry"
+                  sequence="14"/>
+        <menuitem id="menu_enquiry_root"
+                  name="Product Enquiry"
+                  parent="menu_enquiry_main"
+                  sequence="1"/>
+        <menuitem id="menu_enquiry"
+                  action="action_medicine_enquiry"
+                  name="Enquiries"
+                  parent="menu_enquiry_root"
+                  sequence="1"/>
+    </data>
+</openerp>

@@ -1,0 +1,97 @@
+<openerp>
+    <data>
+        <template id="report_enquiry_template">
+            <t t-call="report.html_container">
+<!--                <t t-call="report.external_layout">-->
+                    <t t-foreach="docs" t-as="o">
+                        <div class="page">
+                            <div class="col-xs-12" style='font-size:20px'>
+                                <center>
+                                    <b>New Order</b>
+                                    <b></b>
+
+                                </center>
+                            </div>
+                            <style>
+                                    .right-aligned-div {
+                                    text-align: left;
+                                    float: right;
+                                    }
+                                    .left-aligned-div {
+                                    text-align: left;
+                                    float: left;
+                                    }
+                                    .center {
+                                    text-align: center;
+
+                                    }
+                                    .container {
+                                    display: grid;
+                                    grid-template-columns: 1fr 1fr 1fr;
+
+                                    }
+
+                                </style>
+                              <div class="container">
+                                  <div class="left-aligned-div">
+                                      <div t-if="o.name">
+                                            <strong>Customer Name:</strong>
+                                            <span t-field="o.name"/>
+                                      </div>
+<!--                                      <div t-if="o.phone_no">-->
+<!--                                            <strong>Phone No:</strong>-->
+<!--                                            <span t-field="o.phone_no"/>-->
+<!--                                      </div>-->
+<!--                                      <div t-if="o.address">-->
+<!--                                            <strong>Address:</strong>-->
+<!--                                            <span t-field="o.address"/>-->
+<!--                                      </div>-->
+
+                                  </div>
+
+                              </div>
+                            <table class="table table-bordered">
+                                <div style="border:1px solid black;">
+                                    <thead>
+                                        <tr>
+                                            <th>Medicine</th>
+                                            <th>Group</th>
+                                            <th>Potency</th>
+                                            <th>Packing</th>
+                                            <th>Quantity</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="invoice_tbody">
+                                        <tr t-foreach="o.medicine_ids" t-as="l">
+                                            <td>
+                                                <span t-field="l.medicine_id"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="l.group_id"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="l.potency_id"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="l.packing_id"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="l.qty"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </div>
+                            </table>
+                        </div>
+                    </t>
+<!--                </t>-->
+            </t>
+        </template>
+        <report
+                id="enquiry_report_id"
+                string="Enquiry Report"
+                model="medicine.enquiry"
+                report_type="qweb-html"
+                name="pharmacy_mgmnt.report_enquiry_template"/>
+    </data>
+</openerp>

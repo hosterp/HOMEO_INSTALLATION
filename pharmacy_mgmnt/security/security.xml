@@ -1,0 +1,62 @@
+<openerp>
+    <data noupdate="0">
+<!--        PURCHASE-->
+        <record id="make_invisible" model="res.groups">
+            <field name="name">Visible Purchase Menu</field>
+        </record>
+        <record model="ir.ui.menu" id="base.menu_purchase_root">
+            <field name="groups_id" eval="[(5,ref('make_invisible'))]"/>
+        </record>
+
+<!--        SALES-->
+
+        <record id="make_invisible_stock" model="res.groups">
+            <field name="name">Visible Stock Menu</field>
+        </record>
+        <record model="ir.ui.menu" id="stock.menu_stock_root">
+            <field name="groups_id" eval="[(5,ref('make_invisible_stock'))]"/>
+        </record>
+
+<!--        REPORTING-->
+        <record id="make_invisible_report" model="res.groups">
+            <field name="name">Visible Report Menu</field>
+        </record>
+        <record model="ir.ui.menu" id="base.menu_reporting">
+            <field name="groups_id" eval="[(5,ref('make_invisible_report'))]"/>
+        </record>
+
+ <!--        ACCOUNTING-->
+        <record id="make_invisible_accounts" model="res.groups">
+            <field name="name">Visible Accounting Menu</field>
+        </record>
+        <record model="ir.ui.menu" id="account.menu_finance">
+            <field name="groups_id" eval="[(5,ref('make_invisible_accounts'))]"/>
+        </record>
+
+        <!--        SALES-->
+        <record id="make_invisible_sales" model="res.groups">
+            <field name="name">Visible Sales Menu</field>
+        </record>
+        <record model="ir.ui.menu" id="base.menu_base_partner">
+            <field name="groups_id" eval="[(5,ref('make_invisible_sales'))]"/>
+        </record>
+
+         <!--        MESSAGING-->
+        <record id="make_invisible_msg1" model="res.groups">
+            <field name="name">Visible Messaging Menu</field>
+        </record>
+        <record model="ir.ui.menu" id="mail.mail_feeds_main">
+            <field name="groups_id" eval="[(5,ref('make_invisible_msg1'))]"/>
+        </record>
+         <record id="make_invisible_modules" model="res.groups">
+            <field name="name">Visible Local Modules</field>
+        </record>
+        <record model="ir.ui.menu" id="base.menu_module_tree">
+            <field name="groups_id" eval="[(5,ref('make_invisible_modules'))]"/>
+        </record>
+
+
+
+   </data>
+
+</openerp>

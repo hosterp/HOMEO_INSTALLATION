@@ -1,0 +1,56 @@
+<openerp>
+	<data>
+        <record model="ir.ui.view" id="supplier_invoice_his_wizard_id">
+			<field name="name">supplier.invoice.historytree</field>
+			<field name="model">supplier.invoice.historytree</field>
+			<field name="arch" type="xml">
+				<form string="Supplier Invoice History">
+					<group>
+						<group>
+							<field name="partner_id" domain="[('supplier','=',True)]" />
+							<field name="financial_year"/>
+						</group>
+						<group>
+							<field name="date_from"/>
+							<field name="date_to"/>
+						</group>
+					</group>
+					<separator string="OR"/>
+					<group col="4">
+						<field name="bill_no"/>
+					</group>
+					<separator string="OR"/>
+					<group col="4">
+						<field name="invoices_id"/>
+					</group>
+
+					<footer>
+						<button name="action_supplier_invoice_his_open_window" type="object" string="Open" class="oe_highlight" />
+						<button string="Cancel" class="oe_link" special="cancel" />
+					</footer>
+				</form>
+			</field>
+		</record>
+
+<!--	.....MENUS AND ACTIONS..............................................................................-->
+
+		<record id="action_supplier_invoice_his" model="ir.actions.act_window">
+					<field name="name">Supplier Invoice History</field>
+					<field name="type">ir.actions.act_window</field>
+					<field name="res_model">supplier.invoice.historytree</field>
+					<field name="target">new</field>
+					<field name="view_type">form</field>
+					<field name="view_mode">form</field>
+		</record>
+
+
+
+		<menuitem action="action_supplier_invoice_his" id="menu_his_2"
+                      name="Supplier Invoice"
+                      sequence="2" parent="menu_his_0"/>
+
+
+
+
+    </data>
+</openerp>

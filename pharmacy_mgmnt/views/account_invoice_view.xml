@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="hide_balance_field_register_payment" model="ir.ui.view">
+            <field name="name">account.voucher.form</field>
+            <field name="model">account.voucher</field>
+            <field name="inherit_id" ref="account_voucher.view_vendor_receipt_dialog_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='writeoff_amount']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+        <record id="discount_view_invoice_line_tree" model="ir.ui.view">
+            <field name="name">discount.account.invoice.line.tree</field>
+            <field name="model">account.invoice.line</field>
+            <field name="inherit_id" ref="account.view_invoice_line_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='discount']" position="attributes">
+                    <attribute name="digits">(16, 2)</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="discount_view_invoice_line_form" model="ir.ui.view">
+            <field name="name">discount.account.invoice.line.form</field>
+            <field name="model">account.invoice.line</field>
+            <field name="inherit_id" ref="account.view_invoice_line_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='discount']" position="attributes">
+                    <attribute name="digits">(16, 2)</attribute>
+                </xpath>
+                <xpath expr="//field[@name='discount']" position="attributes">
+                    <attribute name="readonly">0</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="discount_account_invoice_view_sup_form1" model="ir.ui.view">
+            <field name="name">discount.account.invoice</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@class='oe_subtotal_footer oe_right']" position="replace">
+                    <group>
+                        <group class="oe_subtotal_footer oe_right">
+                            <field name="amount_untaxed" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="amount_discount" widget='monetary' options="{'currency_field': 'currency_id'}"
+                                   string="Discount Total"/>
+                            <div>
+                                <label for="amount_tax_custom"/>
+                            </div>
+                            <field name="amount_tax_custom" nolabel="1" widget="monetary"
+                                   options="{'currency_field': 'currency_id'}"/>
+                            <field name="amount_total" class="oe_subtotal_footer_separator" widget="monetary"
+                                   options="{'currency_field': 'currency_id'}"/>
+                            <field name="residual" groups="account.group_account_user" widget="monetary"
+                                   options="{'currency_field': 'currency_id'}"/>
+                            <field name="reconciled" invisible="1"/>
+                        </group>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="discount_account_invoice_view_form1" model="ir.ui.view">
+            <field name="name">discount.account.invoice</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='discount']" position="attributes">
+                    <attribute name="digits">(16, 2)</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='discount']" position="attributes">
+                    <attribute name="readonly">0</attribute>
+                </xpath>
+                <xpath expr="//field[@name='number']" position="before">
+
+                    <h1 class="container" style="color:red;" attrs="{'invisible': [('cus_invoice', '!=', True)]}">CASH/CREDIT TAX INVOICE</h1>
+                    <h1 class="container" style="color:MediumSeaGreen;"  attrs="{'invisible': [('packing_invoice', '!=', True)]}">PACKING SLIP</h1>
+                    <h1 class="container"   attrs="{'invisible': [('hold_invoice', '!=', True)]}">HOLDING INVOICE</h1>
+                </xpath>
+                <xpath expr="//field[@name='number']" position="before">
+                    <group>
+                        <group>
+                            <h1>
+                                <field name="cus_inv_number" nolabel="1" readonly="1"/>
+                            </h1>
+                        </group>
+                    </group>
+                </xpath>
+                <xpath expr="//group[@class='oe_subtotal_footer oe_right']" position="replace">
+                    <field name="hold_invoice_id" style="width:13%%" placeholder="Select Hold Bill"
+                           attrs="{'invisible': [('cus_invoice', '!=', True)]}"/>
+                    <button name="onchange_hold_invoice_id" string="Import Hold Bill" type="object" class="Hold_Bill" invisible="1"
+                            attrs="{'invisible': [('cus_invoice', '!=', True)]}"/>
+                    <button name="previous_invoice" string="Prev" type="object" style="margin-left: 20px"
+                            attrs="{'invisible': [('cus_invoice', '!=', True)]}"/>
+                    <field name="cus_invoice_id" style="width:13%%" placeholder="Select customer"
+                           attrs="{'invisible': [('cus_invoice', '!=', True)]}"/>
+                <!--<field name="number2" style="width:2%%; margin-left: 10px" readonly="1"/>-->
+                    <button name="next_invoice" string="Next" type="object"
+                            attrs="{'invisible': [('cus_invoice', '!=', True)]}" style="margin-left: 5px"/>
+                    <button name="open_customer_invoice" string="Open Customer Invoice" type="object" class="open_customer" invisible="1"
+                            attrs="{'invisible': [('cus_invoice', '!=', True)]}"/>
+
+                    <field name="pack_open_cus_invoice_id" style="width:13%%" placeholder="Select customer_invoice"
+                           attrs="{'invisible': [('packing_invoice', '!=', True)]}"/>
+                    <button name="onchange_pack_cus_invoice_id" string="Import customer" type="object" class="pack_customer" invisible="1"
+                            attrs="{'invisible': [('packing_invoice', '!=', True)]}"/>
+                    <button name="previous_invoice" string="Prev" type="object" style="margin-left: 20px"
+                            attrs="{'invisible': [('packing_invoice', '!=', True)]}"/>
+                    <field name="pack_invoice_id" style="width:13%%" placeholder="Select Packing slip"
+                           attrs="{'invisible': [('packing_invoice', '!=', True)]}"/>
+                <!--<field name="number2" style="width:2%%; margin-left: 10px" readonly="1"/>-->
+                    <button name="next_invoice" string="Next" type="object"
+                            attrs="{'invisible': [('packing_invoice', '!=', True)]}" style="margin-left: 5px"/>
+                    <button name="onchange_packing_invoice_id" string="open packing slip" type="object" class="open_pack" invisible="1"
+                            attrs="{'invisible': [('packing_invoice', '!=', True)]}"/>
+
+                    <group col="4">
+                        <group name="discount">
+                            <field name="discount_category" attrs="{'readonly': [('state', '!=', 'draft')]}"
+                                   style="width:20%%"/>
+                            <field name="discount_type" style="width:20%%" readonly="1"/>
+                            <field name="discount_rate" style="width:20%%"/>
+                             <field name="amount_in_words" readonly="1" invisible="1"/>
+                            <button name="print_e_way_report" type="object" string="E-WayReport"/>
+
+                        </group>
+                        <group class="oe_subtotal_footer oe_right">
+                            <field name="amount_untaxed" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="amount_discount" widget='monetary' options="{'currency_field': 'currency_id'}"
+                                   string="Discount Total"/>
+                            <div>
+                                <label for="amount_tax"/>
+                            </div>
+                            <field name="amount_tax" nolabel="1" widget="monetary"
+                                   options="{'currency_field': 'currency_id'}"/>
+                            <field name="amount_total" class="oe_subtotal_footer_separator" widget="monetary"
+                                   options="{'currency_field': 'currency_id'}"/>
+                            <field name="residual" groups="account.group_account_user" widget="monetary"
+                                   options="{'currency_field': 'currency_id'}"/>
+                            <field name="reconciled" invisible="1"/>
+
+                        </group>
+                    </group>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</openerp>

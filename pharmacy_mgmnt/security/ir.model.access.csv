@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_stock.pick,stock.pick,model_stock_pick,base.group_user,1,1,1,1
+access_sales_report,sales.report,model_sales_report,,1,1,1,1
+access_stock_view_order,stock.view.order,model_stock_view_order,,1,1,1,1

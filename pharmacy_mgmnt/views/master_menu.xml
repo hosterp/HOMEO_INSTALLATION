@@ -1,0 +1,188 @@
+<openerp>
+    <data>
+        <!--        .............................ACTIONS...................................-->
+
+        <record id="action_dis_config_detail_entry" model="ir.actions.act_window">
+            <field name="name">Discounts</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">cus.discount</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record id="action_sup_dis_config_detail_entry" model="ir.actions.act_window">
+            <field name="name">Supplier Discounts</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">supplier.discounts</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record id="action_sup_dis_config_detail_entry2" model="ir.actions.act_window">
+            <field name="name">Supplier Discounts</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">supplier.discounts2</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record id="action_potency_config_detail_entry" model="ir.actions.act_window">
+            <field name="name">Potency</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.medicine.subcat</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record id="action_packing_config_detail_entry" model="ir.actions.act_window">
+            <field name="name">Packing</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.medicine.packing</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record id="action_company_detail_entry" model="ir.actions.act_window">
+            <field name="name">Company</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.medicine.responsible</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+        <record id="view_product_medicine_tree" model="ir.ui.view">
+            <field name="name">product.medicine.types.tree</field>
+            <field name="model">product.medicine.types</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="medicine_type"/>
+                    <field name="rack_space"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Form View -->
+        <record id="view_product_medicine_form" model="ir.ui.view">
+            <field name="name">product.medicine.types</field>
+            <field name="model">product.medicine.types</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="medicine_type"/>
+                            <field name="rack_space"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_rack_detail_entry" model="ir.actions.act_window">
+            <field name="name">Rack</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.medicine.types</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_product_medicine_tree"/>
+        </record>
+
+        <record id="action_grp_config_detail_entry" model="ir.actions.act_window">
+            <field name="name">Create Group</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.medicine.group</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record id="action_tax_combo_config_detail_entry" model="ir.actions.act_window">
+            <field name="name">Group-Potency Configuration</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">tax.combo.new</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record id="action_group_discounts" model="ir.actions.act_window">
+            <field name="name">Group-Discounts</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">group.discount</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record id="action_medicines" model="ir.actions.act_window">
+            <field name="name">Medicines</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.template</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="product.product_template_kanban_view"/>
+            <field name="context">{"search_default_filter_to_sell":1, "search_default_medicine_type":1,}</field>
+        </record>
+        <record id="base.action_partner_supplier_form" model="ir.actions.act_window">
+            <field name="name">Vendors</field>
+        </record>
+        <record id="action_inv_responsible" model="ir.actions.act_window">
+            <field name="name">Sale Responsible Persons</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="domain">[('res_person_id','=',True)]</field>
+            <field name="context">{'default_res_person_id': 1,}</field>
+
+        </record>
+
+        <!--        MASTER MENUS.............................................-->
+        <menuitem id="menu_med_configurations_main"
+                  name="Master"/>
+        <menuitem id="menu_med_configurations"
+                  name="Master"
+                  sequence="6" parent="menu_med_configurations_main"/>
+        <menuitem action="action_medicines" id="menu_medicine_master_submenu_id"
+                  name="Product/Medicine"
+                  sequence="1" parent="menu_med_configurations"/>
+        <menuitem id="menu_med_discounts_main"
+                  name="Discounts"
+                  sequence="7" parent="menu_med_configurations"/>
+        <menuitem action="action_dis_config_detail_entry" id="menu_med_config_child_1"
+                  name="Customer Discounts"
+                  sequence="5" parent="menu_med_discounts_main"/>
+        <menuitem id="menu_med_config_child_sdis2"
+                  name="Supplier Discounts"
+                  sequence="6" parent="menu_med_discounts_main"/>
+        <menuitem action="action_sup_dis_config_detail_entry" id="menu_med_config_child_sdis3"
+                  name="Product-wise and Group-wise"
+                  sequence="6" parent="menu_med_config_child_sdis2"/>
+        <!--        <menuitem action="action_sup_dis_config_detail_entry2" id="menu_med_config_child_sdis1"-->
+        <!--                      name="Group Wise"-->
+        <!--                      sequence="7" parent="menu_med_config_child_sdis2"/>-->
+        <menuitem action="action_group_discounts" id="menu_med_config_child_inf"
+                  name="Additional Discounts"
+                  parent="menu_med_config_child_sdis2"/>
+
+        <menuitem action="action_potency_config_detail_entry" id="menu_med_config_child_2"
+                  name="Potency"
+                  sequence="2" parent="menu_med_configurations"/>
+        <menuitem action="action_packing_config_detail_entry" id="menu_med_config_child_pack"
+                  name="Packing"
+                  sequence="3" parent="menu_med_configurations"/>
+        <menuitem action="action_company_detail_entry" id="menu_company_detail_entry_id"
+                  name="Company"
+                  sequence="4" parent="menu_med_configurations"/>
+        <menuitem action="action_rack_detail_entry" id="menu_rack_detail_entry_id"
+                  name="Rack"
+                  sequence="5" parent="menu_med_configurations"/>
+        <menuitem action="action_grp_config_detail_entry" id="menu_med_config_child_3"
+                  name="Group-Product-Potency Link"
+                  sequence="11" parent="menu_med_configurations"/>
+        <!--        <menuitem action="action_tax_combo_config_detail_entry" id="menu_med_config_child_4"-->
+        <!--                      name="Group-Potency Link"-->
+        <!--                      sequence="7" parent="menu_med_configurations"/>-->
+        <menuitem action="action_partner_supplier_form" id="menu_suppliers"
+                  name="Suppliers"
+                  sequence="8" parent="menu_med_configurations"/>
+        <menuitem action="action_partner_form" id="menu_customers"
+                  name="Customers/Retailers"
+                  sequence="9" parent="menu_med_configurations"/>
+        <menuitem action="action_inv_responsible"
+                  id="menu_responsible_persons"
+                  name="Responsible Persons-Sale"
+                  sequence="10"
+                  parent="menu_med_configurations"/>
+        <menuitem id="menu_main_financial_year"
+                  name="Financial Year"
+                  sequence="13" parent="menu_med_configurations"/>
+
+        <menuitem action="account.action_account_fiscalyear" id="menu_financial_year_creation"
+                  name="Fiscal Year"
+                  sequence="1" parent="menu_main_financial_year"/>
+        <menuitem action="account.action_account_period" id="menu_financial_year_period_creation"
+                  name="Periods"
+                  sequence="2" parent="menu_main_financial_year"/>
+
+
+    </data>
+</openerp>

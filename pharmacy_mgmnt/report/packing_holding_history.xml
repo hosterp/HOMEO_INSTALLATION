@@ -1,0 +1,100 @@
+<openerp>
+	<data>
+        <record model="ir.ui.view" id="packing_slip_wizard_id">
+			<field name="name">packing.invoice.history.tree</field>
+			<field name="model">customer.invoice.historytree</field>
+			<field name="arch" type="xml">
+				<form string="Packing Slips History">
+					<group col="6">
+						<group>
+							<field name="partner_id" domain="[('customer','=',True)]" />
+							<field name="financial_year"/>
+						</group>
+						<group>
+							<field name="date_from"/>
+							<field name="date_to"/>
+						</group>
+                    </group>
+					<separator string="OR"/>
+					<group>
+						<group col="6">
+							<field name="invoices_id" string="Packing Slip NO" domain="[('packing_invoice','=',True)]"/>
+						</group>
+					</group>
+					<footer>
+						<button name="action_packing_slip_window" type="object" string="Open" class="oe_highlight" />
+						<button string="Cancel" class="oe_link" special="cancel" />
+					</footer>
+				</form>
+			</field>
+		</record>
+        <record model="ir.ui.view" id="holding_invoice_wizard_id">
+			<field name="name">holding.invoice.history.tree</field>
+			<field name="model">customer.invoice.historytree</field>
+			<field name="arch" type="xml">
+				<form string="Holding Invoices History">
+					<group col="2">
+						<group>
+							<field name="partner_id" domain="[('customer','=',True)]" />
+							<field name="financial_year"/>
+						</group>
+						<group>
+							<field name="date_from"/>
+							<field name="date_to"/>
+						</group>
+						<group>
+
+						</group>
+					</group>
+						<separator string="OR"/>
+						<group>
+							<group>
+								<field name="invoices_id" string="Holding Invoice No" domain="[('holding_invoice','=',True)]"/>
+							</group>
+						</group>
+					<footer>
+						<button name="action_holding_invoice_window" type="object" string="Open" class="oe_highlight" />
+						<button string="Cancel" class="oe_link" special="cancel" />
+					</footer>
+				</form>
+			</field>
+		</record>
+
+<!--	.....MENUS AND ACTIONS..............................................................................-->
+
+		<record id="action_packing_slips_wizard_view" model="ir.actions.act_window">
+			<field name="name">Packing Slip History</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">customer.invoice.historytree</field>
+			<field name="target">new</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="view_id" ref="packing_slip_wizard_id"/>
+		</record>
+		<record id="action_holding_invoices_wizard_view" model="ir.actions.act_window">
+			<field name="name">Holding Invoice History</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">customer.invoice.historytree</field>
+			<field name="target">new</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="view_id" ref="holding_invoice_wizard_id" />
+		</record>
+
+		<menuitem
+				id="menu_history_packing_slip_id"
+				name="Packing Slips"
+				action="action_packing_slips_wizard_view"
+				sequence="3"
+				parent="menu_his_0"/>
+		<menuitem
+				id="menu_history_holding_invoice_id"
+				name="Holding Invoices"
+				action="action_holding_invoices_wizard_view"
+				sequence="4"
+				parent="menu_his_0"/>
+
+
+
+    </data>
+</openerp>

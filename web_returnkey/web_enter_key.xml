@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<openerp>
+
+<data>
+
+<template id="custom_assets_backend" name="custom_web_keyboard_navigation assets" inherit_id="web.assets_backend">
+
+<xpath expr="." position="inside">
+
+<script type="text/javascript" src="/web_returnkey/static/view_form.js"></script>
+
+</xpath>
+
+</template>
+
+</data>
+
+</openerp>

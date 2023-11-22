@@ -1,0 +1,133 @@
+<openerp>
+    <data>
+        <record id="sequence_type_stock_order_type_id" model="ir.sequence.type">
+            <field name="name">Stock Order Sequence Type</field>
+            <field name="code">stock.order</field>
+        </record>
+        <record id="sequence_stock_order_id" model="ir.sequence">
+            <field name="name">Stock Order Sequence</field>
+            <field name="code">stock.order</field>
+            <field name="active">TRUE</field>
+            <field name="prefix"></field>
+            <!--            <field name="suffix">/%(year)s</field>-->
+            <field name="padding">4</field>
+            <field name="number_increment">1</field>
+        </record>
+
+        <record model="ir.ui.view" id="view_stock_view_order_tree">
+            <field name="name">Stock View Tree</field>
+            <field name="model">stock.view.order</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Orders">
+                    <field name="sl_no" string="Order Id"/>
+                    <field name="date_field" string="Created Date"/>
+                    <field name="state" widget="statusbar"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- View for the Form -->
+        <record model="ir.ui.view" id="view_stock_view_order_form">
+            <field name="name">Stock View Form</field>
+            <field name="model">stock.view.order</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Medicines">
+                    <header>
+                        <button name="stock_load" string="Stock Load" type="object" class="oe_highlight"/>
+                        <button name="print_stock_order_report" string="Print order" type="object"
+                                class="oe_highlight"/>
+                        <button name="order_purchased" string="Order Purchased"
+                                attrs="{'invisible': [('state', '!=','order' )]}" type="object" class="oe_highlight"/>
+                        <button name="get_sales"  string="Get Sales"   attrs="{'invisible': [('state', '!=','draft')]}" type="object" class="oe_highlight"/>
+                        <field name="state" string="Status" widget="statusbar"/>
+                    </header>
+                    <group>
+                        <group col="4">
+                            <field name="name" required="0"/>
+                            <field name="company_id"/>
+                            <field name="med_category" string="Category"/>
+                            <field name="medicine_id"/>
+                        </group>
+                        <group col="4">
+                            <field name="group_id"/>
+                            <field name="potency_id"/>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Stock">
+                            <field name="stock_view_ids" widget="one2many_list">
+                                <tree editable="bottom"
+                                      colors="red:expiry_date &lt;= current_date;green:expiry_alert_date &lt;= current_date">
+                                    <field name="medicine_1" invisible="1"/>
+                                    <field name="medicine_id" readonly="1"/>
+                                    <field name="rack" readonly="1"/>
+                                    <field name="potency" readonly="1"/>
+                                    <field name="company" readonly="1"/>
+                                    <field name="medicine_grp1" readonly="1"/>
+                                    <field name="qty" type="char" readonly="1"/>
+                                    <field name="mrp" type="char" readonly="1"/>
+                                    <field name="manf_date" readonly="1"/>
+                                    <field name="expiry_date" readonly="1"/>
+                                    <field name="get_sales"/>
+                                    <field name="number_of_order" colors="blue;"/>
+                                    <field name="expiry_alert_date" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Sales">
+                            <field name="sales_order_ids" readonly="1">
+                                <tree editable="bottom">
+                                    <field name="number2" readonly="1"/>
+                                    <field name="partner_id" readonly="1"/>
+                                    <field name="date_invoice" readonly="1"/>
+                                    <field name="product_id" readonly="1"/>
+                                    <field name="medicine_name_subcat" readonly="1"/>
+                                    <field name="medicine_grp" readonly="1"/>
+                                    <field name="product_of" readonly="1"/>
+                                    <field name="quantity" readonly="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Orders">
+                            <field name="order_ids" widget="one2many_list">
+                                <tree editable="bottom">
+                                    <field name="medicine_1" invisible="1"/>
+                                    <field name="medicine_id" readonly="1"/>
+                                    <field name="rack" readonly="1"/>
+                                    <field name="potency" readonly="1"/>
+                                    <field name="company" readonly="1"/>
+                                    <field name="medicine_grp1" readonly="1"/>
+                                    <field name="qty" type="char" invisible="1"/>
+                                    <field name="mrp" type="char" invisible="1"/>
+                                    <field name="manf_date" invisible="1"/>
+                                    <field name="expiry_date" invisible="1"/>
+                                    <field name="new_order"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action for the Window -->
+        <record id="action_stock_view_order" model="ir.actions.act_window">
+            <field name="name">Stock View Order</field>
+            <field name="res_model">stock.view.order</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_stock_view_order_tree"/>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <!--            <field name="target">current</field>-->
+        </record>
+        <menuitem id="menu_view_order"
+                  action="action_stock_view_order"
+                  name="Create Order"
+                  parent="r2"
+                  sequence="5"/>
+    </data>
+</openerp>

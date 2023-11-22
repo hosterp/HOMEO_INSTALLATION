@@ -1,0 +1,58 @@
+<openerp>
+	<data>
+        <record model="ir.ui.view" id="customer_invoice_his_wizard_id">
+			<field name="name">customer.invoice.historytree</field>
+			<field name="model">customer.invoice.historytree</field>
+			<field name="arch" type="xml">
+				<form string="Customer Invoice History">
+					<group>
+						<group>
+							<field name="partner_id" domain="[('customer','=',True)]" />
+							<field name="financial_year"/>
+						</group>
+						<group>
+							<field name="date_from"/>
+							<field name="date_to"/>
+						</group>
+					</group>
+						<separator string="OR"/>
+						<group col="4">
+							<field name="invoices_id" domain="[('cus_invoice','=',True)]"/>
+						</group>
+					<footer>
+						<button name="action_customer_invoice_his_open_window" type="object" string="Open" class="oe_highlight" />
+						<button string="Cancel" class="oe_link" special="cancel" />
+					</footer>
+				</form>
+			</field>
+		</record>
+
+<!--	.....MENUS AND ACTIONS..............................................................................-->
+
+		<record id="action_customer_invoice_his" model="ir.actions.act_window">
+					<field name="name">Customer Invoice History</field>
+					<field name="type">ir.actions.act_window</field>
+					<field name="res_model">customer.invoice.historytree</field>
+					<field name="target">new</field>
+					<field name="view_type">form</field>
+					<field name="view_mode">form</field>
+		</record>
+
+		<menuitem id="menu_med_main_history"
+                  name="Invoice History"
+                  sequence="12"/>
+<!--		<menuitem id="menu_med_main_stock_report"-->
+<!--                  name="Stock Report"-->
+<!--                  sequence="13"/>-->
+<!--		<menuitem id="rack_information_list_report_main"  name="Stock Report" sequence="1" parent="menu_med_main_stock_report"/>-->
+<!--		<menuitem id="rack_information_list_report" action="action_rack_stock_report" name="Rack Stock Details" sequence="1" parent="rack_information_list_report_main"/>-->
+<!--		<menuitem id="medicine_information_list_report" action="action_medicine_stock_report" name="Medicine Stock Details" sequence="2" parent="rack_information_list_report_main"/>-->
+		<menuitem id="menu_his_0" name="View History" sequence="1" parent="menu_med_main_history"/>
+		<menuitem action="action_customer_invoice_his" id="menu_his_1"
+                      name="Customer Invoice"
+                      sequence="1" parent="menu_his_0"/>
+
+
+
+    </data>
+</openerp>

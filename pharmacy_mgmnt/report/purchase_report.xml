@@ -1,0 +1,128 @@
+<openerp>
+	<data>
+        <record model="ir.ui.view" id="purchase_report_wizard_id">
+			<field name="name">purchase report</field>
+			<field name="model">purchase.invoice.report</field>
+			<field name="arch" type="xml">
+				<form string="Purchase Report">
+					<group>
+						<group>
+							<field name="date_from" required="1"/>
+							<field name="date_to" required="1"/>
+							<field name="product"/>
+							<field name="packing"/>
+						</group>
+						<group>
+							<field name="potency"/>
+							<field name="company"/>
+							<field name="group"/>
+						</group>
+					</group>
+					<footer>
+						<button name="action_purchase_report_open_window" type="object" string="Print" class="oe_highlight" />
+						<button type="object" name="view_purchase_report" string="View" class="oe_highlight" />
+						<button string="Cancel" class="oe_link" special="cancel" />
+					</footer>
+				</form>
+			</field>
+		</record>
+		<report id="report_purchase_report_id" string="Purchase Report"
+			model="purchase.invoice.report" report_type="qweb-pdf"
+			name="pharmacy_mgmnt.purchase_report_template_new"/>
+		<record id="pharmacy_mgmnt.report_purchase_report_id" model="ir.actions.report.xml">
+			<field name="paperformat_id" ref="report_paperformat"/>
+		</record>
+
+<!--		..................TEMPLATE VIEW........................................................-->
+
+		<template id="purchase_report_template_new">
+
+	     <style>
+table, th, td {
+
+  border-collapse: collapse;
+
+}
+th, td {
+  padding: 17px;
+  text-align: left;
+}
+</style>
+
+			<t t-call="report.html_container">
+				<t t-foreach="docs" t-as="o">
+<!--					<t t-call="report.external_layout">-->
+						<div class="page">
+
+							<center><b><h1>Purchase Report </h1></b></center><br/>
+							<span><center><b><h4> <span t-field="o.date_from"/> To <span t-field="o.date_to"/></h4></b></center></span>
+							<t t-set="sl_no" t-value="1" />
+							<t t-set="subtotal" t-value="0" />
+
+							<div>
+								<center>
+
+									<table class="table table-bordered">
+										<thead>
+
+											<tr>
+												<td style="width: 4%;" align="center"><h4><b><center>S# No</center></b></h4></td>
+												<td style="width: 4%;" align="center"><h4><b><center>Bill No</center></b></h4></td>
+												<td style="width: 4%;" align="center"><h4><b><center>Product</center></b></h4></td>
+												<td style="width: 10%;" align="center"><h4><b><center>Batch</center></b></h4></td>
+												<td style="width: 10%;" align="center"><h4><b><center>Expiry</center></b></h4></td>
+												<td style="width: 10%;" align="center"><h4><b><center>Rack</center></b></h4></td>
+												<td style="width: 10%;" align="center"><h4><b><center>Purchased Qty</center></b></h4></td>
+											</tr>
+										</thead>
+										<tbody>
+											<t t-foreach="docs.get_details()" t-as="line">
+												<tr>
+													<td>
+														<center><span t-esc="sl_no" />
+															<t t-set="sl_no" t-value="sl_no+1" /></center>
+													</td>
+													<td>
+														<center><span t-esc="line.invoice_id.number2"/></center>
+													</td>
+										            <td>
+														<center><span t-esc="line.product_id.name"/></center>
+													</td>
+													<td>
+														<center><span t-esc="line.batch_2.batch"/></center>
+													</td>
+										            <td>
+														<center><span t-esc="line.expiry_date"/></center>
+													</td>
+													<td>
+														<center><span t-esc="line.medicine_rack.medicine_type"/></center>
+													</td>
+													<td>
+														<center><span t-esc="round(line.quantity, 0)"/></center>
+													</td>
+												</tr>
+											</t>
+										</tbody>
+									</table>
+								</center>
+							</div>
+						</div>
+<!--					</t>-->
+				</t>
+			</t>
+</template>
+<!--	.....MENUS AND ACTIONS..............................................................................-->
+
+		<record id="action_purchase_report" model="ir.actions.act_window">
+					<field name="name">Print Purchase Report</field>
+					<field name="type">ir.actions.act_window</field>
+					<field name="res_model">purchase.invoice.report</field>
+					<field name="target">new</field>
+					<field name="view_type">form</field>
+					<field name="view_mode">form</field>
+		</record>
+        <menuitem action="action_purchase_report" id="menu_purchase_report_id"
+                              name="Purchase Reports"
+                              sequence="5" parent="pharmacy_mgmnt.menu_reports_1"/>
+    </data>
+</openerp>

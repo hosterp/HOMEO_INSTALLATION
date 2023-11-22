@@ -1,0 +1,174 @@
+<openerp>
+    <data>
+         <record model="ir.ui.view" id="inherit_supplier_invoice_form_history_id">
+             <field name="name">Supplier Invoices History</field>
+             <field name="model">account.invoice</field>
+             <field name="inherit_id" ref="account.invoice_supplier_form" />
+             <field name="arch" type="xml">
+                 <xpath expr="//div[hasclass('oe_chatter')]" position="attributes">
+                     <attribute name="invisible">1</attribute>
+                 </xpath>
+                 <xpath expr="//field[@name='journal_id']" position="before">
+                 </xpath>
+                 <xpath expr="//field[@name='invoice_line']" position="before">
+                     <group>
+                         <group>
+                            <field name="invoices_id" string="Select Previous Invoice" domain="[('partner_id','=',partner_id)]"/>
+                         </group>
+                        <group>
+                            <button class = "oe_edit_only" name="load" string="Load Invoice Lines" type="object"/>
+                        </group>
+                        <group invisible="1">
+                            <button name="testfunction" type="object" string="Group " class="oe_highlight"/>
+                        </group>
+                        <group>
+                            <button name="action_discount" type="object" string="Group Discount" class="oe_highlight" states="draft"/>
+                        </group>
+                        <group>
+                            <button name="action_discount1" type="object" string="Group Discounts" class="oe_highlight" states="open,paid"/>
+                        </group>
+                    </group>
+                </xpath>
+            </field>
+         </record>
+
+<!--<!_______________________________________________________SUPPLIER DISCOUNTS___________________________________________________________&ndash;&gt;-->
+
+        <record model="ir.ui.view" id="supplier_discount_entry_form_id1">
+            <field name="name">Supplier Discounts </field>
+            <field name="model">supplier.discounts</field>
+            <field name="arch" type="xml">
+                <form string="Medicine Rack">
+                    <sheet>
+                        <center><H1>Supplier Discount Entry</H1></center>
+                        <group>
+                            <field name="supplier" domain="[('supplier','=',True)]"/>
+                        </group>
+                        <notebook>
+                        <page string="Discount Configuration">
+                        <field name="lines">
+                        <tree editable="bottom">
+                        <field name="company"/>
+                        <field name="medicine_1"/>
+                        <field name="potency"/>
+                        <field name="medicine_grp1"/>
+                        <field name="medicine_name_packing"/>
+                        <field name="discount"/>
+                        </tree>
+                        </field>
+                        </page>
+                            <page string="Group Discount Configuration">
+                        <field name="lines2">
+                        <tree editable="bottom">
+                        <field name="company"/>
+        <!--                <field name="medicine_1"/>-->
+                        <field name="potency"/>
+                        <field name="medicine_grp1"/>
+                        <field name="medicine_name_packing"/>
+                        <field name="discount"/>
+                        </tree>
+                        </field>
+                        </page>
+
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="supplier_discount_entry_tree_id1">
+            <field name="name">Supplier Discounts </field>
+            <field name="model">supplier.discounts</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="supplier" domain="[('supplier','=',True)]"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="supplier_discount_entry_form_id2">
+            <field name="name">Supplier Discounts2 </field>
+            <field name="model">supplier.discounts2</field>
+            <field name="arch" type="xml">
+                <form string="Supplier Discount">
+                    <sheet>
+                        <center><H1>Supplier Discount Entry</H1></center>
+                        <group>
+                            <field name="supplier" domain="[('supplier','=',True)]"/>
+                        </group>
+                        <notebook>
+                        <page string="Discount Configuration">
+                        <field name="lines">
+                        <tree editable="bottom">
+                        <field name="company"/>
+        <!--                <field name="medicine_1"/>-->
+                        <field name="potency"/>
+                        <field name="medicine_grp1"/>
+                        <field name="medicine_name_packing"/>
+                        <field name="discount"/>
+                        </tree>
+                        </field>
+                        </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="supplier_discount_entry_tree_id2">
+            <field name="name">Supplier Discounts 2</field>
+            <field name="model">supplier.discounts2</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="supplier" domain="[('supplier','=',True)]"/>
+                </tree>
+            </field>
+        </record>
+<!--        <record model="ir.ui.view" id="supplier_discount2_wizard_form_id1">-->
+<!--            <field name="name">set.discount</field>-->
+<!--            <field name="model">set.discount</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <form string="Set Discounts">-->
+<!--                    <sheet>-->
+<!--                        <group>-->
+<!--                            <field name="lines" context="{'inv_id': active_id}"/>-->
+<!--                            <field name="ac_id"/>-->
+<!--                            <field name="test"/>-->
+<!--                        </group>-->
+<!--                        <footer><button name="save_discount" type="object" string="Save"/></footer>-->
+<!--                    </sheet>-->
+<!--                </form>-->
+<!--            </field>-->
+<!--        </record>-->
+        <record model="ir.ui.view" id="supplier_discount2_wizard_tree_id2">
+            <field name="name">set.discount</field>
+            <field name="model">group.discount</field>
+            <field name="arch" type="xml">
+                <tree string="Set Discounts" editable="bottom">
+        <!--                <field name="inv_id"/>-->
+                        <field name="medicine_grp"/>
+                        <field name="medicine_name_subcat"/>
+                        <field name="medicine_name_packing"/>
+                        <field name="discount"/>
+                        <field name="expiry_months"/>
+
+                </tree>
+            </field>
+        </record>
+<!--        <record model="ir.ui.view" id="supplier_discount2_wizard_tree_id_copy">-->
+<!--            <field name="name">set.discountcopy</field>-->
+<!--            <field name="model">group.discount.copy</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <tree string="Set Discounts" editable="bottom">-->
+<!--                        <field name="inv_id"/>-->
+<!--                        <field name="medicine_grp"/>-->
+<!--        &lt;!&ndash;                <field name="medicine_name_subcat"/>&ndash;&gt;-->
+<!--        &lt;!&ndash;                <field name="medicine_name_packing"/>&ndash;&gt;-->
+<!--                        <field name="discount"/>-->
+<!--                        <field name="expiry_months"/>-->
+
+<!--                </tree>-->
+<!--            </field>-->
+<!--        </record>-->
+
+    </data>
+</openerp>

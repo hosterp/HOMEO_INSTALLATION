@@ -1,0 +1,52 @@
+.dataTables_wrapper {}
+
+.dataTables_wrapper .dataTables_length {
+    display: none;
+}
+
+.dataTables_wrapper .dataTables_filter {
+    float: left;
+}
+
+.oe_form_container > .oe_form .oe_form_nosheet > h1 {
+    max-height: 30px;
+}
+.oe_form_container > .oe_form .oe_form_nosheet > h1 > label.oe_form_label {
+    font-size: 17px;
+}
+textarea.field_text[name="address_new"] {
+    max-height: 40px;
+}
+
+text.input[type="text"]{
+max-width: 182px
+}
+.container{
+    text-align:center;
+}
+.payment_total_calculation{
+    text-align:right;
+}
+.oe_form_label{
+    font-size: 14px;
+}
+.oe_form_label_help{
+    font-size: 14px;
+}
+.oe_sortable{
+    font-size: 14px;
+}
+.modal-content {
+    width: 1150px;
+    position: absolute;
+    top: 50%;
+    left: -15%;
+
+}
+.field_text{
+    height: 28px;
+}
+.openerp .oe_application .oe_breadcrumb_title > * {
+         font-size: 14px;
+
+}

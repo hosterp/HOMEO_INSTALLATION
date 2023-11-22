@@ -1,0 +1,141 @@
+<openerp>
+	<data>
+
+
+        <record model="ir.ui.view" id="supplier_invoice_report_wizard_id">
+			<field name="name">supplier.invoice.report</field>
+			<field name="model">supplier.invoice.report</field>
+			<field name="arch" type="xml">
+				<form string="Supplier Invoice Report">
+					<group col="4">
+                        <field name="partner_id" domain="[('supplier','=',True)]" required="1"/>
+                    </group>
+					<group col="4">
+						<field name="date_from" required="1"/>
+						<field name="date_to" required="1"/>
+					</group>
+
+					<footer>
+						<button name="action_supplier_invoice_open_window" type="object" string="Print" class="oe_highlight" />
+						<button string="Cancel" class="oe_link" special="cancel" />
+					</footer>
+				</form>
+			</field>
+		</record>
+		<report id="report_medical_supplier_invoices_id" string="Supplier Invoice Report"
+			model="supplier.invoice.report" report_type="qweb-pdf"
+			name="pharmacy_mgmnt.report_supplier_invoice_template_new"/>
+<!--		<record id="pharmacy_mgmnt.report_medical_supplier_invoices_id" model="ir.actions.report.xml">-->
+<!--			<field name="paperformat_id" ref="report_paperformat"/>-->
+<!--		</record>-->
+
+<!--		..................TEMPLATE VIEW........................................................-->
+
+		<template id="report_supplier_invoice_template_new">
+
+	     <style>
+table, th, td {
+
+  border-collapse: collapse;
+
+}
+th, td {
+  padding: 17px;
+  text-align: left;
+}
+</style>
+
+			<t t-call="report.html_container">
+				<t t-foreach="docs" t-as="o">
+<!--					<t t-call="report.external_layout">-->
+						<div class="page">
+
+							<center><b><h1>Supplier Invoice Report</h1></b></center><br/>
+
+	<span><center><b><h4> <span t-field="o.date_from"/> To <span t-field="o.date_to"/></h4></b></center></span>
+							<t t-set="sl_no" t-value="1" />
+							<t t-set="subtotal" t-value="0" />
+
+							<div>
+								<center>
+
+									<table class="table table-bordered">
+										<thead>
+
+											<tr>
+												<td style="width: 4%;" align="center"><h4><b><center>S# No</center></b></h4></td>
+												<td style="width: 10%;" align="center"><h4><b><center>Date</center></b></h4></td>
+												<td style="width: 10%;" align="center"><h4><b><center>Medicine</center></b></h4></td>
+												<td style="width: 10%;" align="center"><h4><b><center>Manf:Date</center></b></h4></td>
+												<td style="width: 10%; " align="center"><h4><b><center>Expiry:Date</center></b></h4></td>
+												<td style="width: 10%; " align="center"><h4><b><center>Amount</center></b></h4></td>
+
+											</tr>
+										</thead>
+										<tbody>
+												<t t-set="test_variable4" t-value="0"/>
+									             <p t-foreach="docs.get_details()" t-as="line">
+										         <t t-set="test_variable4" t-value="line['total_amt']"/>
+									             </p>
+											<t t-foreach="docs.get_details()" t-as="line">
+												<tr >
+													<td >
+														<center><span t-esc="sl_no" />
+															<t t-set="sl_no" t-value="sl_no+1" /></center>
+													</td>
+													<td>
+														<center><span t-esc="line['date'][8:10] + '-' + line['date'][5:7] + '-' + line['date'][0:4]" /></center>
+													</td>
+													<td>
+														<center><span t-esc="line['medicine']"/></center>
+													</td>
+													<td>
+														<center><span t-esc="line['exp'][8:10] + '-' + line['exp'][5:7] + '-' + line['exp'][0:4]" /></center>
+													</td>
+													<td>
+														<center><span t-esc="line['mfd'][8:10] + '-' + line['mfd'][5:7] + '-' + line['mfd'][0:4]" /></center>
+													</td>
+													<td>
+														<center><span t-esc="line['amount']"/></center>
+													</td>
+
+												</tr>
+											</t>
+											<tr>
+												<td colspan="5" style="width: 10%;" align="center"><center><h5><b>Grand Total</b></h5></center></td>
+												<td><b><center><span t-esc="test_variable4"/></center></b></td>
+											</tr>
+
+										</tbody>
+									</table>
+								</center>
+							</div>
+						</div>
+<!--					</t>-->
+				</t>
+			</t>
+</template>
+
+
+
+
+
+<!--	.....MENUS AND ACTIONS..............................................................................-->
+
+		<record id="action_supplier_invoice_report" model="ir.actions.act_window">
+					<field name="name">Print Supplier Invoice Report</field>
+					<field name="type">ir.actions.act_window</field>
+					<field name="res_model">supplier.invoice.report</field>
+					<field name="target">new</field>
+					<field name="view_type">form</field>
+					<field name="view_mode">form</field>
+		</record>
+
+		<menuitem action="action_supplier_invoice_report" id="menu_supplier"
+                              name="Supplier Invoice Reports"
+                              sequence="1" parent="pharmacy_mgmnt.menu_reports_1"/>
+
+
+
+    </data>
+</openerp>

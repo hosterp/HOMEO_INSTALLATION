@@ -1,0 +1,194 @@
+
+<openerp>
+    <data>
+
+    <record id="res_partner_sale_history" model="ir.ui.view">
+        <field name="name">res.partner.sale.history</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="priority" eval="20"/>
+
+        <field name="arch" type="xml">
+        <xpath expr="//form//sheet" position="before">
+            <header>
+                <button class="oe_highlight" type="object" name="open_tree_view" string="Sale History"
+                 attrs="{'invisible': [('res_person_id', '=', False)]}" />
+            </header>
+            </xpath>
+            <xpath expr="//field[@name='email']" position="after">
+<!--                <field name="res_person_id"/>-->
+<!--                <field name="gst_no" attrs="{'invisible': [('customer','=',False)],'required':[('b2b','=',True)]}"/>-->
+<!--                <field name="drug_license_number" attrs="{'invisible': [('customer','=',False)]}"/>-->
+            </xpath>
+            <xpath expr="//field[@name='website']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='street2']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='city']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='state_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='zip']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='country_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='street']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//label[@string='Address']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='parent_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='phone']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='website']" position="after">
+                <field name="local_area_customer" attrs="{'invisible': [('customer','=',False)]}"/>
+                <field name="interstate_customer" attrs="{'invisible': [('customer','=',False)]}"/>
+                <field name="select_state" attrs="{'invisible': [('interstate_customer','=',False)]}"/>
+                <field name="address_new"/>
+                <field name="res_person_id"/>
+                <field name="advance_amount"/>
+                <field name="gst_no" attrs="{'invisible': [('customer','=',False)],'required':[('b2b','=',True)]}"/>
+                <field name="drug_license_number" attrs="{'invisible': [('customer','=',False)]}"/>
+                <field name="b2c" attrs="{'invisible': [('customer','=',False)]}"/>
+                <field name="b2b" attrs="{'invisible': [('customer','=',False)]}" readonly="0"/>
+                <field name="local_customer" attrs="{'invisible': [('customer','=',False)]}"/>
+            </xpath>
+        </field>
+    </record>
+
+        <record id="view_invoice_cust_inherit_line_id" model="ir.ui.view">
+        <field name="name">account.invoice.form</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_form"/>
+        <field name="arch" type="xml">
+                    <xpath expr="//button[@string='Refund Invoice']" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </xpath>
+                     <xpath expr="//button[@string='Cancel Invoice']" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </xpath>
+<!--                    <xpath expr="//field[@name='account_id']" position="after">-->
+<!--                          <field name="advance_amount" string="Advance Amount" style="height:20%%" readonly="1"/>-->
+<!--                    </xpath>-->
+                    <xpath expr="//field[@name='account_id']" position="after">
+                          <field name="pay_mode" />
+                        <field name="address_new" style="height:50%%"/>
+                    </xpath>
+                    <xpath expr="//field[@name='date_invoice']" position="after">
+                        <field name="res_person" domain="[('res_person_id', '=', True)]" attrs="{'required': [('pay_mode','=', 'credit')]}"/>
+                    </xpath>
+
+                    <xpath expr="//field[@name='partner_id']" position="before">
+<!--                        <field name="date_invoice" readonly="1"/>-->
+                         <field name="financial_year" placeholder="Financial Year" style="width:50%%" />
+                    </xpath>
+                    <xpath expr="//field[@name='journal_id']" position="after">
+                          <field name="advance_amount" string="Advance Amount" style="height:20%%" readonly="1"/>
+                            <field name="doctor_name_1" style="width:20%%"/>
+<!--                        <field name="financial_year" placeholder="Financial Year" style="width:50%%" invisible="1"/>-->
+
+                        <field name="b2c" invisible="1"/>
+                        <field name="b2b" invisible="1" />
+                    </xpath>
+                    <xpath expr="//field[@name='account_id']" position="after">
+<!--                        <field name="address_new" style="height:50%%"/>-->
+                        <field name="interstate_customer" invisible="1"/>
+                        <field name="local_customer" invisible="1"/>
+                        <field name="bill_nature" invisible="1"/>
+                    </xpath>
+        </field>
+        </record>
+        <record model="ir.ui.view" id="edit_partner_form_customer_inherit_tree_1">
+        <field name="name">Customer Invoice</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_tree"/>
+        <field name="arch" type="xml">
+             <xpath expr="//field[@name='date_invoice']" position="after">
+                  <field name="res_person" />
+          </xpath>
+        </field>
+        </record>
+
+        <record id="view_invoice_supplier_addresss_id" model="ir.ui.view">
+        <field name="name">account.invoice.form</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_supplier_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@string='Ask Refund']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+             <xpath expr="//button[@string='Cancel Invoice']" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </xpath>
+<!--            <xpath expr="//field[@name='invoice_line']" position="attributes">-->
+<!--                <attribute name="limit">42</attribute>-->
+<!--            </xpath>-->
+            <xpath expr="//field[@name='date_invoice']" position="after">
+                                <field name="inv_amount"/>
+            </xpath>
+            <xpath expr="//field[@name='origin']" position="after">
+                <field name="address_new" />
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="inv_sup_no" placeholder="Supplier Invoice No"/>
+            </xpath>
+            <xpath expr="//field[@name='fiscal_position']" position="after">
+<!--                        <field name="address_new"/>-->
+                                <field name="financial_year" placeholder="Financial Year" style="width:50%%" />
+                                <field name="picking_type_id"/>
+
+            </xpath>
+
+        </field>
+        </record>
+        <record id="action_partner_supplier_form" model="ir.actions.act_window">
+            <field name="name">Suppliers</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_type">form</field>
+            <field name="domain">[('supplier','=',True)]</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="context">{'search_default_supplier': 1,'default_customer': 0,'default_supplier': 1}</field>
+            <field name="filter" eval="True"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to add a contact in your address book.
+              </p><p>
+                Odoo helps you easily track all activities related to
+                a supplier: discussions, history of purchases,
+                documents, etc.
+              </p>
+            </field>
+        </record>
+
+        <record id="action_partner_form" model="ir.actions.act_window">
+            <field name="name">Customers</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_type">form</field>
+            <field name="domain">[('customer','=',True),('res_person_id','=',False)]</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="context">{"search_default_customer":1}</field>
+            <field name="search_view_id" ref="base.view_res_partner_filter"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to add a contact in your address book.
+              </p><p>
+                Odoo helps you easily track all activities related to
+                a customer; discussions, history of business opportunities,
+                documents, etc.
+              </p>
+            </field>
+        </record>
+    </data>
+</openerp>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_production_lot_form" model="ir.ui.view">
+    <field name="name">product_expiry_simple.stock.production.lot.form</field>
+    <field name="model">stock.production.lot</field>
+    <field name="inherit_id" ref="stock.view_production_lot_form"/>
+    <field name="arch" type="xml">
+        <field name="ref" position="after">
+            <field name="mfd" invisible="1"/>
+        </field>
+    </field>
+</record>
+        <!--TREE [LOTS]-->
+        <record id="stock.view_production_lot_tree" model="ir.ui.view">
+            <field name="name">stock.production.lot.tree</field>
+            <field name="model">stock.production.lot</field>
+            <field name="arch" type="xml">
+                <tree string="Serial Number and Date of Expiry" colors="red:state=='red';#ff8080:state=='lite_red'">
+<!--                    <field name="expiry_date"/>-->
+                    <field name="name"/>                    <field name="ref" invisible="1"/>
+                    <field name="product_id"/>
+                    <field name="potency"/>
+                                    <field name="medicine_name_packing"/>
+                                     <field name="company"/>
+                                     <field name="batch" invisible="1"/>
+                                     <field name="batch_2"/>
+                                     <field name="mrp" type="char"/>
+<!--                                     <field name="rack"/>-->
+                                    <field name="qty" type="char"/>
+                                    <field name="manf_date"/>
+<!--                    <field name="mfd"/>-->
+<!--                    <field name="life_date"/>-->
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <!--SEARCH [LOTS]-->
+        <record model="ir.ui.view" id="search_med_lot_filter">
+            <field name="name">Production Lots Filter</field>
+            <field name="model">stock.production.lot</field>
+            <field name="arch" type="xml">
+                <search string="Product Lots Filter">
+                    <field name="name" string="Product Lots" filter_domain="['|',('name','ilike',self),('ref','ilike',self)]"/>
+                    <field name="product_id"/>
+
+                    <group expand="0" string="Group By">
+                        <filter string="Medicines" icon="terp-accessories-archiver" domain="[]" context="{'group_by':'product_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        <!--ACTION [LOTS]-->
+        <record id="action_med_lot" model="ir.actions.act_window">
+            <field name="name">Serial Numbers and Expiry</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.production.lot</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="stock.view_production_lot_tree"/>
+            <field name="search_view_id" ref="search_med_lot_filter"/>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to add a serial number.
+              </p><p>
+                This is the list of all the production lots you recorded. When
+                you select a lot, you can get the traceability of the products contained in lot.
+              </p>
+            </field>
+
+        </record>
+
+<!--        CUSTOM FIELD ADDED-->
+<!--        <record id="idea_category_list2" model="ir.ui.view">-->
+<!--    <field name="name">id.category.list2</field>-->
+<!--    <field name="model">stock.production.lot</field>-->
+<!--    <field name="inherit_id" ref="stock.view_production_lot_form"/>-->
+<!--    <field name="arch" type="xml">-->
+<!--        &lt;!&ndash; find field description and add the field-->
+<!--             idea_ids after it &ndash;&gt;-->
+<!--        <xpath expr="//field[@name='use_date']" position="before">-->
+<!--          <field name="mfd" string="Manufacturing Date"/>-->
+<!--        </xpath>-->
+<!--    </field>-->
+<!--</record>-->
+        <!--MENU [LOTS]-->
+<!--        <menuitem action="action_med_lot" id="menu_action_med_lot_form"-->
+<!--                  parent="base.menu_sales"-->
+<!--                  sequence="40"-->
+<!--                  groups="stock.group_production_lot"/>-->
+    </data>
+</openerp>

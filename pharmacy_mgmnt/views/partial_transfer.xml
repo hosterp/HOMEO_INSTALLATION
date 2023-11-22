@@ -1,0 +1,92 @@
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="new_transfer_rack_id_partial">
+            <field name="name">Transfer Stock Positions/Racks</field>
+            <field name="model">partial.transf</field>
+            <field name="arch" type="xml">
+                <form string="Medicine Stock Entry">
+                    <sheet>
+                        <script>
+
+                        </script>
+
+                        <center>
+                            <H1>Partial Transfer Stock</H1>
+                        </center>
+                        <br/>
+                        <group>
+                            <group>
+                                <H4>
+                                    <field name="racks_id_1" placeholder="From"/>
+                                </H4>
+                            </group>
+                            <group>
+                                <H4>
+                                    <field name="racks_id_2" placeholder="To"/>
+                                </H4>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Stock">
+                                <group>
+                                    <div>
+                                        <button name="load_lines" string="Load Stock" type="object"
+                                                class="oe_highlight"/>
+                                        <button name="part_transfer" string="Partial Transfer" type="object"
+                                                class="oe_highlight"/>
+                                        <group col="2">
+                                            <group>
+                                                <field name="stock_part_id" style="width: 20%">
+                                                    <tree editable="bottom">
+                                                        <field name="qty" type="char"/>
+                                                        <field name="medicine_1"/>
+                                                        <field name="potency"/>
+                                                        <field name="medicine_name_packing"/>
+                                                        <field name="company"/>
+                                                        <field name="batch_2"/>
+                                                        <field name="qty_transfer"/>
+                                                    </tree>
+                                                </field>
+                                            </group>
+                                            <group>
+                                            </group>
+                                        </group>
+
+                                    </div>
+                                </group>
+                            </page>
+                        </notebook>
+
+                        <group col="2">
+                            <group>
+                            </group>
+                            <group>
+
+                            </group>
+                        </group>
+
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="action_rack_stock_transfer_partial" model="ir.actions.act_window">
+            <field name="name">Partial Transfer</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">partial.transf</field>
+            <field name="target">new</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+        </record>
+        <menuitem action="action_rack_stock_transfer_partial"
+                  id="menu_stock_change_rack_partial_under_stock_menu"
+                  name="Partial Stock Transfer"
+                  sequence="8"
+                  parent="r2"/>
+
+
+        <menuitem action="action_rack_stock_transfer_partial" id="menu_stock_change_rack_partial"
+                  name="Partial Stock Transfer"
+                  sequence="8" parent="menu_med_features_4"/>
+    </data>
+</openerp>

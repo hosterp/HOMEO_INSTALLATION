@@ -1,0 +1,85 @@
+<openerp>
+    <data>
+        <template id="b2c_hsn_tax_report_template">
+            <t t-call="report.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <div class="page">
+                        <div class="col-xs-12" style='font-size:20px'>
+                            <center>
+                                <b>TAX REPORT BY B2C HSN BILL</b>
+                            </center>
+                        </div>
+                        <table class="table table-bordered">
+                            <tr>
+                                <td style='font-size:15px'>
+                                    <b>ItemDescri</b>
+                                </td>
+                                <td style='font-size:15px'>
+                                    <b>CountOfQty</b>
+                                </td>
+                                <td style='font-size:15px'>
+                                    <b>TaxPer</b>
+                                </td>
+                                <td style='font-size:15px'>
+                                    <b>TotalTaxAmt</b>
+                                </td>
+                                <td style='font-size:15px'>
+                                    <b>TotalAmt</b>
+                                </td>
+                                <!--                                    <t t-set="sl_no" t-value="1"/>-->
+                                <t t-set="tax_total" t-value="0"/>
+                                <t t-set="tax_amount_total" t-value="0"/>
+                                <t t-set="amount_total" t-value="0"/>
+                                <t t-foreach="o.get_b2c_hsn_tax_invoices()" t-as="invoice">
+                                    <t t-foreach="invoice['invoice_data']" t-as="line">
+                                        <tr>
+                                            <td style='font-size:15px'>
+                                                <span t-esc="line['hsn_code']"/>
+                                            </td>
+                                            <td style='font-size:15px'>
+                                                <span t-esc="line['quantity']"/>
+                                            </td>
+                                            <td style='font-size:15px'>
+                                                <span t-esc="line['invoice_line_tax_id4']"/>
+                                            </td>
+                                            <td style='font-size:15px'>
+                                                <span t-esc="round(line['product_tax'],2)"/>
+                                                <t t-set="tax_amount_total"
+                                                   t-value="tax_amount_total+line['product_tax']"/>
+                                            </td>
+                                            <td style='font-size:15px'>
+                                                <span t-esc="round(line['amt_w_tax'],2)"/>
+                                                <t t-set="amount_total" t-value="amount_total+(line['amt_w_tax'])"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </t>
+                                <tr>
+                                    <td colspan="3">
+                                        <strong>Total</strong>
+                                    </td>
+                                    <td>
+                                        <strong>
+                                            <span t-esc="round(tax_amount_total,2)"/>
+                                        </strong>
+                                    </td>
+                                    <td>
+                                        <strong>
+                                            <span t-esc="round(amount_total,2)"/>
+                                        </strong>
+                                    </td>
+                                </tr>
+                            </tr>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </template>
+        <report
+                id="b2c_tax_report_hsn_id"
+                string="Tax Report"
+                model="tax.report.wizard"
+                report_type="qweb-html"
+                name="pharmacy_mgmnt.b2c_hsn_tax_report_template"/>
+    </data>
+</openerp>

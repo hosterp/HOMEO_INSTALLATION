@@ -1,0 +1,77 @@
+<openerp>
+    <data>
+<record model="ir.ui.view" id="new_transfer_rack_id">
+            <field name="name">Transfer Stock Positions/Racks</field>
+            <field name="model">rack.transferr2</field>
+            <field name="arch" type="xml">
+                <form string="Medicine Stock Entry">
+                    <sheet>
+
+                     <center><H1>Transfer Stock</H1></center><br/>
+                        <group>
+                        <group>
+                            <H4>
+<!--                                <field name="racks_id1" placeholder="From"/>-->
+                                <field name="racks_id_1" placeholder="From"/>
+                            </H4>
+                            </group>
+                            <group>
+                            <H4>
+<!--                                <field name="racks_id2" placeholder="To" invisible="1"/>-->
+                                <field name="racks_id_2" placeholder="To"/>
+                            </H4>
+                        </group>
+                        </group>
+                        <notebook><page string="Stock">
+                            <group><div><button name="load_lines" string="Load Stock" type="object" class="oe_highlight"/>
+                            <button name="full_transfer" string="Full Transfer" type="object" class="oe_highlight"/>
+                               <group col="2"><group><field name="stock_full_id" style="width: 20%" >
+                                  <tree editable="bottom">
+                                     <field name="qty" type="char"/>
+                                     <field name="medicine_1"/>
+                                     <field name="potency"/>
+                                     <field name="medicine_name_packing"/>
+                                     <field name="company"/>
+                                     <field name="batch_2"/>
+                                </tree>
+                           </field></group><group>
+                               </group>
+                               </group>
+                                </div>
+                            </group>
+                        </page>
+                        </notebook>
+
+                           <group col="2">
+                           <group>
+                           </group>
+                           <group>
+                            </group>
+                           </group>
+
+
+                    </sheet>
+                </form>
+            </field>
+</record>
+        <record id="action_rack_stock_transfer" model="ir.actions.act_window">
+            <field name="name">Rack Transfer</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">rack.transferr2</field>
+            <field name="target">new</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+<!--            <field name="res_id">self.id</field>-->
+        </record>
+         <menuitem action="action_rack_stock_transfer"
+                  id="menu_stock_change_rack_under_stock_menu"
+                  name="Full Stock Transfer"
+                  sequence="7"
+                  parent="r2"/>
+
+
+        <menuitem action="action_rack_stock_transfer" id="menu_stock_change_rack"
+                              name="Full Stock Transfer"
+                              sequence="7" parent="menu_med_features_4"/>
+    </data>
+</openerp>

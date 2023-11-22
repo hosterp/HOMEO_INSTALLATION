@@ -1,0 +1,23 @@
+<openerp>
+    <data>
+
+        <record id="res_partner_credit_limit" model="ir.ui.view">
+        <field name="name">res.partner.credit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="priority" eval="20"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='email']" position="after">
+                    <field name="limit_amt" attrs="{'invisible': [('customer','=',False)]}"/>
+                    <field name="used_credit_amt" attrs="{'invisible': [('customer','=',False)]}"/>
+                    <field name="days_credit_limit" attrs="{'invisible': [('customer','=',False)]}"/>
+                    <field name="credit_end_date" attrs="{'invisible': [('customer','=',False)]}"/>
+                </xpath>
+
+            </field>
+        </record>
+
+
+
+    </data>
+</openerp>

@@ -1,0 +1,164 @@
+<openerp>
+	<data>
+
+        <record model="ir.ui.view" id="pending_invoice_report_wizard_id">
+			<field name="name">pending.invoice.report</field>
+			<field name="model">pending.invoice.report</field>
+			<field name="arch" type="xml">
+				<form string="Pending Invoice Report">
+					<group>
+						<group>
+							<field name="partner_id" domain="[('customer','=',True),('res_person_id','=',False)]"/>
+							<field name="resp_partner_id" domain="[('res_person_id','=',True)]"/>
+						</group>
+						<group>
+							<field name="date_from" required="1"/>
+							<field name="date_to" required="1"/>
+						</group>
+					</group>
+					<footer>
+						<button name="action_pending_invoice_open_window" type="object" string="Print" class="oe_highlight" />
+						<button string="Cancel" class="oe_link" special="cancel" />
+					</footer>
+				</form>
+			</field>
+		</record>
+		<report id="report_medical_pending_invoices_id" string="Customer Pending Invoice Report"
+			model="pending.invoice.report" report_type="qweb-pdf"
+			name="pharmacy_mgmnt.report_pending_invoice_template_new"/>
+<!--		<record id="pharmacy_mgmnt.report_medical_pending_invoices_id" model="ir.actions.report.xml">-->
+<!--			<field name="paperformat_id" ref="report_paperformat"/>-->
+<!--		</record>-->
+
+<!--		..................TEMPLATE VIEW........................................................-->
+
+		<template id="report_pending_invoice_template_new">
+
+	     <style>
+table, th, td {
+
+  border-collapse: collapse;
+
+}
+th, td {
+  padding: 17px;
+  text-align: left;
+}
+</style>
+
+			<t t-call="report.html_container">
+				<t t-foreach="docs" t-as="o">
+<!--					<t t-call="report.external_layout">-->
+						<div class="page">
+
+							<center><b><h1>Customer Pending Payment Report</h1></b></center><br/>
+
+	<span><center><b><h4> <span t-field="o.date_from"/> To <span t-field="o.date_to"/></h4></b></center></span>
+							<t t-set="sl_no" t-value="1" />
+							<t t-set="subtotal" t-value="0" />
+
+							<div>
+								<center>
+
+									<table class="table table-bordered">
+										<thead>
+
+											<tr>
+												<td style="width: 4%;" align="center"><h4><b><center>S# No</center></b></h4></td>
+												<td style="width: 10%;" align="center"><h4><b><center>Date</center></b></h4></td>
+												<td style="width: 10%;" align="center"><h4><b><center>Customer</center></b></h4></td>
+												<td style="width: 10%;" align="center"><h4><b><center>Resposible Person</center></b></h4></td>
+												<td style="width: 10%; " align="center"><h4><b><center>Bill Amount</center></b></h4></td>
+												<td style="width: 10%; " align="center"><h4><b><center>Paid Amount</center></b></h4></td>
+												<td style="width: 10%; " align="center"><h4><b><center>Balance</center></b></h4></td>
+
+											</tr>
+										</thead>
+										<tbody>
+
+											<t t-set="test_variable4" t-value="0"/>
+									             <p t-foreach="docs.get_details()" t-as="line">
+										         <t t-set="test_variable4" t-value="line['total_bal']"/>
+									             </p>
+
+											<t t-set="test_variable3" t-value="0"/>
+									             <p t-foreach="docs.get_details()" t-as="line">
+										         <t t-set="test_variable3" t-value="line['total_paid']"/>
+									             </p>
+
+											<t t-set="test_variable2" t-value="0"/>
+									             <p t-foreach="docs.get_details()" t-as="line">
+										         <t t-set="test_variable2" t-value="line['total_sub']"/>
+									             </p>
+
+
+											<t t-foreach="docs.get_details()" t-as="line">
+												<tr >
+													<td >
+														<center><span t-esc="sl_no" />
+															<t t-set="sl_no" t-value="sl_no+1" /></center>
+													</td>
+													<td>
+														<center> <span t-esc="line['date'][8:10] + '-' + line['date'][5:7] + '-' + line['date'][0:4]" /></center>
+													</td>
+													<td>
+														<center><span t-esc="line['customer']"/></center>
+													</td>
+													<td>
+														<center><span t-esc="line['res_person']"/></center>
+													</td>
+													<td>
+														<center><span t-esc="line['bill_amt']"/></center>
+													</td>
+													<td>
+														<center><span t-esc="line['paid_amt']"/></center>
+													</td>
+                                                    <td>
+														<center><span t-esc="line['bal_amt']"/></center>
+													</td>
+
+
+												</tr>
+											</t>
+
+
+											<tr>
+												<td colspan="4" style="width: 10%;" align="center"><center><h5><b>Total Amount</b></h5></center></td>
+												<td><b><center><span t-esc="test_variable2"/></center></b></td>
+												<td><b><center><span t-esc="test_variable3"/></center></b></td>
+												<td><b><center><span t-esc="test_variable4"/></center></b></td>
+											</tr>
+
+										</tbody>
+									</table>
+								</center>
+							</div>
+						</div>
+<!--					</t>-->
+				</t>
+			</t>
+</template>
+
+
+
+
+
+<!--	.....MENUS AND ACTIONS..............................................................................-->
+
+		<record id="action_pending_invoice_report" model="ir.actions.act_window">
+					<field name="name">Print Customer Pending Invoice Report</field>
+					<field name="type">ir.actions.act_window</field>
+					<field name="res_model">pending.invoice.report</field>
+					<field name="target">new</field>
+					<field name="view_type">form</field>
+					<field name="view_mode">form</field>
+		</record>
+
+		<menuitem action="action_pending_invoice_report" id="menu_cus_pending"
+                              name="Customer Pending Reports"
+                              sequence="3" parent="pharmacy_mgmnt.menu_reports_1"/>
+
+
+
+    </data>
+</openerp>
